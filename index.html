@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Eventoo Cognitive - Donde los deseos se hacen realidad</title>
+    <meta name="description" content="Crea eventos mágicos con IA: cumpleaños, viajes escolares y fundraising gamificado. Transforma deseos en experiencias únicas.">
+    <meta name="keywords" content="eventos, cumpleaños, viajes escolares, fundraising, IA, gamificación">
+    <meta name="author" content="Eventoo Cognitive">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Eventoo Cognitive - Eventos Mágicos con IA">
+    <meta property="og:description" content="La plataforma que convierte deseos en eventos épicos">
+    <meta property="og:image" content="/assets/images/og-image.jpg">
+    <meta property="og:url" content="https://eventoo.es">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Eventoo Cognitive">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Eventoo Cognitive - Eventos Mágicos con IA">
+    <meta name="twitter:description" content="La plataforma que convierte deseos en eventos épicos">
+    <meta name="twitter:image" content="/assets/images/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    
+    <!-- Preconnect para performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CDN (para prototipado rápido) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Estilos CSS (EN ORDEN DE CASCADA) -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/landing.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    
+    <!-- Analytics (Cloudflare) -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{YOUR_CF_TOKEN}}"}'></script>
+</head>
+
+<body class="bg-dark text-white font-sans leading-relaxed">
+    <!-- Estrellas de fondo -->
+    <div id="stars" class="fixed inset-0 pointer-events-none z-0"></div>
+    
+    <!-- Navegación -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 glass">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">E</span>
+                    </div>
+                    <div>
+                        <h2 class="text-white font-semibold text-xl">Eventoo</h2>
+                        <p class="text-gray-400 text-sm">Casa de Magia</p>
+                    </div>
+                </div>
+                
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-white hover:text-blue-400 transition-colors">Inicio</a>
+                    <a href="#como-funciona" class="nav-link text-white hover:text-blue-400 transition-colors">Cómo Funciona</a>
+                    <a href="#planes" class="nav-link text-white hover:text-blue-400 transition-colors">Planes</a>
+                    <a href="#educacion" class="nav-link text-white hover:text-blue-400 transition-colors">EDU</a>
+                    <a href="#testimonios" class="nav-link text-white hover:text-blue-400 transition-colors">Testimonios</a>
+                </div>
+                
+                <!-- Acciones -->
+                <div class="flex items-center space-x-4">
+                    <a href="/dashboard" class="btn-magic px-6 py-2 rounded-lg text-white font-semibold">
+                        Dashboard
+                    </a>
+                    <button id="mobileMenuBtn" class="md:hidden text-white p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Menú Móvil -->
+            <div id="mobileMenu" class="md:hidden hidden mt-4 pb-4 border-t border-gray-700">
+                <div class="flex flex-col space-y-4 pt-4">
+                    <a href="#home" class="nav-link-mobile text-white hover:text-blue-400 transition-colors py-2">Inicio</a>
+                    <a href="#como-funciona" class="nav-link-mobile text-white hover:text-blue-400 transition-colors py-2">Cómo Funciona</a>
+                    <a href="#planes" class="nav-link-mobile text-white hover:text-blue-400 transition-colors py-2">Planes</a>
+                    <a href="#educacion" class="nav-link-mobile text-white hover:text-blue-400 transition-colors py-2">EDU</a>
+                    <a href="#testimonios" class="nav-link-mobile text-white hover:text-blue-400 transition-colors py-2">Testimonios</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative pt-20">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="max-w-5xl mx-auto">
+                <!-- Hero Content -->
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Texto -->
+                    <div class="space-y-8">
+                        <h1 id="hero-text" class="text-5xl md:text-7xl font-bold leading-tight fade-in">
+                            <span class="text-gradient bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                Eventoo Cognitive
+                            </span>
+                        </h1>
+                        
+                        <div class="text-xl md:text-2xl text-gray-300 mb-6 fade-in" style="animation-delay: 0.2s;">
+                            <span class="typewriter">La Plataforma Mágica donde los Deseos se Hacen Realidad</span>
+                        </div>
+                        
+                        <p class="text-lg text-gray-400 mb-8 fade-in" style="animation-delay: 0.4s;">
+                            Con la ayuda de la <strong class="text-blue-400">IA Cognitiva</strong>, 
+                            <strong class="text-purple-400">Gamificación</strong> y el poder del 
+                            <strong class="text-yellow-400">Genio Djinx</strong> transformamos eventos en experiencias épicas.
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in" style="animation-delay: 0.6s;">
+                            <button onclick="openWizard('single')" class="btn-magic px-8 py-4 rounded-lg text-white font-semibold text-lg">
+                                🎉 Crear Evento
+                            </button>
+                            <button onclick="openChat()" class="btn-outline px-8 py-4 rounded-lg text-white font-semibold text-lg">
+                                💬 Hablar con Genio
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Imagen/Video -->
+                    <div id="hero-image" class="relative fade-in" style="animation-delay: 0.8s;">
+                        <div class="relative">
+                            <!-- Genio Djinx -->
+                            <div class="w-80 h-80 mx-auto relative">
+                                <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full opacity-20 blur-3xl"></div>
+                                <img src="/assets/images/djink.png" alt="Genio Djinx" class="w-full h-full object-contain relative z-10 float">
+                                <!-- Partículas mágicas -->
+                                <div class="absolute -top-4 -left-4 text-3xl magic-particle">✨</div>
+                                <div class="absolute -top-2 -right-2 text-2xl magic-particle" style="animation-delay: 1s;">⭐</div>
+                                <div class="absolute -bottom-2 left-1/4 text-4xl magic-particle" style="animation-delay: 2s;">🌟</div>
+                                <div class="absolute -bottom-4 right-1/3 text-2xl magic-particle" style="animation-delay: 3s;">✨</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 fade-in" style="animation-delay: 1s;">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-blue-400 mb-2 count-up">1,247</div>
+                        <div class="text-gray-400">Eventos Creados</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-green-400 mb-2 count-up">€45,230</div>
+                        <div class="text-gray-400">Recaudados</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-purple-400 mb-2 count-up">89</div>
+                        <div class="text-gray-400">Casas Mágicas</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-yellow-400 mb-2 count-up">98%</div>
+                        <div class="text-gray-400">Satisfacción</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Cómo Funciona -->
+    <section id="como-funciona" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gradient bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    ¿Cómo Funciona la Magia?
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Transforma tus deseos en eventos inolvidables en 3 sencillos pasos
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Paso 1 -->
+                <div class="card text-center fade-in" style="animation-delay: 0.1s;">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                        1️⃣
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-blue-400">Crea tu Evento</h3>
+                    <p class="text-gray-300 mb-6">
+                        Describe tu evento y el Genio Djinx analizará tus necesidades con IA avanzada para crear la experiencia perfecta.
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <div>✓ Cumpleaños mágicos</div>
+                        <div>✓ Viajes escolares</div>
+                        <div>✓ Eventos especiales</div>
+                    </div>
+                </div>
+                
+                <!-- Paso 2 -->
+                <div class="card text-center fade-in" style="animation-delay: 0.2s;">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                        2️⃣
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">Invoca Retos</h3>
+                    <p class="text-gray-300 mb-6">
+                        Nuestro sistema gamificado crea retos personalizados que transforman la recaudación de fondos en una aventura divertida.
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <div>✓ Retos gamificados</div>
+                        <div>✓ Recompensas mágicas</div>
+                        <div>✓ Progreso en tiempo real</div>
+                    </div>
+                </div>
+                
+                <!-- Paso 3 -->
+                <div class="card text-center fade-in" style="animation-delay: 0.3s;">
+                    <div class="w-20 h-20 bg-gradient-to-br from-pink-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                        3️⃣
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-pink-400">Haz Realidad</h3>
+                    <p class="text-gray-300 mb-6">
+                        Cumple tus deseos con la ayuda de tu comunidad. Cada aporte cuenta y cada evento se convierte en magia.
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <div>✓ Cumplimiento garantizado</div>
+                        <div>✓ Experiencias únicas</div>
+                        <div>✓ Recuerdos para siempre</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Planes -->
+    <section id="planes" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gradient bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Elige tu Plan Mágico
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                    Descubre el poder perfecto para tus necesidades. Todos los planes incluyen magia, pero algunos tienen poderes adicionales.
+                </p>
+                
+                <!-- Toggle Personal/EDU -->
+                <div class="flex justify-center mb-12">
+                    <div class="bg-gray-800 rounded-lg p-1 flex">
+                        <button id="btn-personal" onclick="showPlans('personal')" class="px-6 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold transition-all">
+                            Personal
+                        </button>
+                        <button id="btn-edu" onclick="showPlans('edu')" class="px-6 py-3 rounded-lg text-gray-400 font-semibold transition-all">
+                            EDU
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Planes Personal -->
+            <div id="plans-personal" class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Plan Bronce -->
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">🧙‍♂️</div>
+                    <h3 class="text-2xl font-bold mb-2 text-yellow-400">Bronce</h3>
+                    <div class="text-4xl font-bold mb-4 text-white">
+                        Gratis
+                    </div>
+                    <ul class="text-left space-y-3 mb-8 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Hasta 5 deseos
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Página de evento personalizada
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Gamificación básica
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            IA de apoyo
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Soporte por email
+                        </li>
+                    </ul>
+                    <button onclick="openWizard('single')" class="btn-magic w-full py-3 rounded-lg text-white font-semibold">
+                        Comenzar Magia
+                    </button>
+                </div>
+                
+                <!-- Plan Plata -->
+                <div class="card-gradient text-center border-2 border-purple-500 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                            MÁS POPULAR
+                        </span>
+                    </div>
+                    <div class="text-6xl mb-4">🧙‍♀️</div>
+                    <h3 class="text-2xl font-bold mb-2 text-yellow-400">Plata</h3>
+                    <div class="text-4xl font-bold mb-2 text-white">
+                        €4.99<span class="text-lg text-gray-300">/mes</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">Perfecto para eventos especiales</p>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Todo lo del plan Bronce
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Deseos ilimitados
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Gamificación avanzada
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            IA cognitiva completa
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Analytics detallados
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Soporte prioritario
+                        </li>
+                    </ul>
+                    <button onclick="openWizard('single')" class="btn-gold w-full py-3 rounded-lg text-white font-semibold">
+                        Elegir Plata
+                    </button>
+                </div>
+                
+                <!-- Plan Oro -->
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">🧙‍♂️</div>
+                    <h3 class="text-2xl font-bold mb-2 text-yellow-400">Oro</h3>
+                    <div class="text-4xl font-bold mb-2 text-white">
+                        €9.99<span class="text-lg text-gray-300">/mes</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">Para profesionales del evento</p>
+                    <ul class="text-left space-y-3 mb-8 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Todo lo del plan Plata
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            API personalizada
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Integraciones premium
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            White label
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Gestor de cuenta dedicado
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Soporte 24/7
+                        </li>
+                    </ul>
+                    <button onclick="window.location.href='/contacto'" class="btn-magic w-full py-3 rounded-lg text-white font-semibold">
+                        Contactar Ventas
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Planes EDU (ocultos por defecto) -->
+            <div id="plans-edu" class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto hidden">
+                <!-- Plan EDU Básico -->
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">🎓</div>
+                    <h3 class="text-2xl font-bold mb-2 text-blue-400">EDU Básico</h3>
+                    <div class="text-4xl font-bold mb-2 text-white">
+                        Gratis
+                    </div>
+                    <p class="text-gray-300 mb-6">Para una clase</p>
+                    <ul class="text-left space-y-3 mb-8 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Hasta 30 estudiantes
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            1 Casa Mágica
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            5 retos básicos
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Productos básicos
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Soporte por email
+                        </li>
+                    </ul>
+                    <button onclick="openWizard('edu')" class="btn-magic w-full py-3 rounded-lg text-white font-semibold">
+                        Comenzar EDU
+                    </button>
+                </div>
+                
+                <!-- Plan EDU Premium -->
+                <div class="card-gradient text-center border-2 border-blue-500 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                            RECOMENDADO
+                        </span>
+                    </div>
+                    <div class="text-6xl mb-4">🎓</div>
+                    <h3 class="text-2xl font-bold mb-2 text-blue-400">EDU Premium</h3>
+                    <div class="text-4xl font-bold mb-2 text-white">
+                        €19.99<span class="text-lg text-gray-300">/mes</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">Para el colegio completo</p>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Estudiantes ilimitados
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Casas ilimitadas
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Retos avanzados
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Productos premium
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Panel de control
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Formación incluida
+                        </li>
+                    </ul>
+                    <button onclick="openWizard('edu')" class="btn-gold w-full py-3 rounded-lg text-white font-semibold">
+                        Elegir EDU Premium
+                    </button>
+                </div>
+                
+                <!-- Plan EDU Enterprise -->
+                <div class="card text-center">
+                    <div class="text-6xl mb-4">🏫</div>
+                    <h3 class="text-2xl font-bold mb-2 text-purple-400">EDU Enterprise</h3>
+                    <div class="text-4xl font-bold mb-2 text-white">
+                        Personalizado
+                    </div>
+                    <p class="text-gray-300 mb-6">Para redes educativas</p>
+                    <ul class="text-left space-y-3 mb-8 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Múltiples centros
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            API personalizada
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Integración LMS
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            White label
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Soporte dedicado
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span>
+                            Formación completa
+                        </li>
+                    </ul>
+                    <button onclick="window.location.href='/contacto'" class="btn-magic w-full py-3 rounded-lg text-white font-semibold">
+                        Solicitar Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- EDU Section -->
+    <section id="educacion" class="py-20 relative bg-gradient-to-br from-blue-900/30 to-purple-900/30">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gradient bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Eventoo EDU
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                    La plataforma educativa que transforma viajes escolares en aventuras mágicas de aprendizaje y fundraising
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+                <!-- Contenido -->
+                <div class="space-y-8">
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-xl">🏠</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2 text-blue-400">Casas Mágicas</h3>
+                                <p class="text-gray-300">
+                                    Cada clase crea su propia Casa Mágica con identidad única, escudo y mascota. Los estudiantes se convierten en magos de su propia aventura.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-xl">🎮</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2 text-purple-400">Retos Educativos</h3>
+                                <p class="text-gray-300">
+                                    Cada reto desbloquea contenido educativo relacionado con el destino. Aprenden mientras recaudan fondos de forma divertida.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-xl">🎨</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2 text-pink-400">Merchandising</h3>
+                                <p class="text-gray-300">
+                                    Los estudiantes crean su propio merchandising con IA. Cada venta ayuda a financiar el viaje y crea recuerdos únicos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="window.location.href='/educacion.html'" class="btn-magic px-8 py-4 rounded-lg text-white font-semibold">
+                            Explorar EDU
+                        </button>
+                        <button onclick="openWizard('edu')" class="btn-outline px-8 py-4 rounded-lg text-white font-semibold">
+                            Crear Casa EDU
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Visualización -->
+                <div class="relative">
+                    <div class="glass rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-center text-blue-400">Panel de Control EDU</h3>
+                        
+                        <!-- Stats de ejemplo -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-green-400 mb-1">24</div>
+                                <div class="text-sm text-gray-400">Estudiantes</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-400 mb-1">€1,847</div>
+                                <div class="text-sm text-gray-400">Recaudado</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-purple-400 mb-1">8</div>
+                                <div class="text-sm text-gray-400">Retos</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-pink-400 mb-1">12</div>
+                                <div class="text-sm text-gray-400">Productos</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progreso -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">Progreso del Viaje</span>
+                                <span class="text-blue-400">73%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full" style="width: 73%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Últimos retos -->
+                        <div>
+                            <h4 class="text-lg font-semibold mb-3 text-gray-300">Últimos Retos Completados</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between bg-green-900/30 p-2 rounded">
+                                    <span class="text-sm">Nombre de la Casa</span>
+                                    <span class="text-green-400 text-xs">✓ Completado</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-purple-900/30 p-2 rounded">
+                                    <span class="text-sm">Escudo Heráldico</span>
+                                    <span class="text-purple-400 text-xs">✓ Completado</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-orange-900/30 p-2 rounded">
+                                    <span class="text-sm">Misión Solidaria</span>
+                                    <span class="text-orange-400 text-xs">🔄 En curso</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonios -->
+    <section id="testimonios" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gradient bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Historias de Magia
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Descubre cómo Eventoo ha transformado deseos en realidad
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Testimonio 1 -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <img src="/assets/images/testimonials/parent-1.jpg" alt="María García" class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-semibold text-white">María García</h4>
+                            <p class="text-sm text-gray-400">Madre</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "Mi hija quería una fiesta de cumpleaños temática de hadas. Eventoo no solo cumplió su deseo, sino que crearon una experiencia mágica que recordaremos para siempre."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                </div>
+                
+                <!-- Testimonio 2 -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <img src="/assets/images/testimonials/teacher-1.jpg" alt="Carlos Rodríguez" class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-semibold text-white">Carlos Rodríguez</h4>
+                            <p class="text-sm text-gray-400">Profesor</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "Eventoo EDU transformó nuestro viaje a París en una aventura educativa. Los estudiantes aprendieron historia mientras recaudaban fondos. Increíble herramienta pedagógica."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                </div>
+                
+                <!-- Testimonio 3 -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <img src="/assets/images/testimonials/parent-2.jpg" alt="Ana Martínez" class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-semibold text-white">Ana Martínez</h4>
+                            <p class="text-sm text-gray-400">Directora</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "Implementamos Eventoo EDU en todo el colegio. La motivación de los estudiantes ha aumentado un 300% y hemos recaudado más fondos que nunca para nuestros proyectos."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Final -->
+    <section id="cta-final" class="py-20 relative bg-gradient-to-br from-purple-900/50 to-blue-900/50">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-4xl mx-auto fade-in">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6">
+                    <span class="text-gradient bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        ¿Listo para la Magia?
+                    </span>
+                </h2>
+                
+                <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+                    Únete a miles de personas que ya han transformado sus deseos en eventos inolvidables. 
+                    Tu aventura mágica comienza ahora.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-6 justify-center mb-12">
+                    <button onclick="openWizard('single')" class="btn-magic px-8 py-4 rounded-lg text-white font-semibold text-lg">
+                        🎉 Crear mi Evento
+                    </button>
+                    <button onclick="openWizard('edu')" class="btn-gold px-8 py-4 rounded-lg text-white font-semibold text-lg">
+                        🎓 Evento EDU
+                    </button>
+                </div>
+                
+                <!-- Cuenta regresiva o promoción -->
+                <div class="glass rounded-xl p-6 max-w-md mx-auto">
+                    <h3 class="text-xl font-bold mb-2 text-yellow-400">🎁 Oferta Especial</h3>
+                    <p class="text-gray-300 mb-4">
+                        Primeros 100 usuarios obtienen 3 meses de plan Plata GRATIS
+                    </p>
+                    <div class="text-2xl font-bold text-white mb-2 count-down" data-target="2025-02-01">
+                        Quedan: <span id="countdown">-- días</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+                        <div class="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full" style="width: 73%"></div>
+                    </div>
+                    <p class="text-sm text-gray-400">73/100 usuarios han reclamado la oferta</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <!-- Logo y descripción -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">E</span>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-xl">Eventoo</h3>
+                            <p class="text-gray-400 text-sm">Casa de Magia</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4 max-w-md">
+                        La plataforma definitiva para crear eventos mágicos con IA, 
+                        gamificación y el poder del Genio Djinx. Donde los deseos se hacen realidad.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Links rápidos -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Producto</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#como-funciona" class="hover:text-white transition-colors">Cómo Funciona</a></li>
+                        <li><a href="#planes" class="hover:text-white transition-colors">Planes</a></li>
+                        <li><a href="#educacion" class="hover:text-white transition-colors">EDU</a></li>
+                        <li><a href="/dashboard" class="hover:text-white transition-colors">Dashboard</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Empresa -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Empresa</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/sobre-nosotros.html" class="hover:text-white transition-colors">Sobre Nosotros</a></li>
+                        <li><a href="/contacto.html" class="hover:text-white transition-colors">Contacto</a></li>
+                        <li><a href="/blog.html" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="/carrreras.html" class="hover:text-white transition-colors">Carreras</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/privacidad.html" class="hover:text-white transition-colors">Privacidad</a></li>
+                        <li><a href="/terminos.html" class="hover:text-white transition-colors">Términos</a></li>
+                        <li><a href="/cookies.html" class="hover:text-white transition-colors">Cookies</a></li>
+                        <li><a href="/licencias.html" class="hover:text-white transition-colors">Licencias</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 Eventoo Cognitive. Todos los derechos reservados. 
+                        Hecho con ✨ y 🧞‍♂️ en Madrid.
+                    </p>
+                    <div class="flex space-x-4 mt-4 md:mt-0 text-sm text-gray-400">
+                        <span>v1.0.0</span>
+                        <span>•</span>
+                        <span>Powered by Cloudflare</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts JavaScript (AL FINAL del body para mejor performance) -->
+    <script src="/js/config.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/api-client.js"></script>
+    <script src="/js/animations.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/analytics.js"></script>
+</body>
+</html>

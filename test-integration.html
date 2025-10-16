@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Integración - Dashboard de Monetización</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        
+        .test-result {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        .success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+        
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        
+        .info {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test de Integración - Dashboard de Monetización</h1>
+        <p>Pruebas para verificar la integración del Plan Executor con el Dashboard</p>
+        
+        <div class="test-section">
+            <h2>1. Carga de Scripts</h2>
+            <div id="scriptTests"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. Plan Executor</h2>
+            <div id="executorTests"></div>
+            <button onclick="testPlanExecutor()">Probar Plan Executor</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. Monetization Planner</h2>
+            <div id="plannerTests"></div>
+            <button onclick="testMonetizationPlanner()">Probar Monetization Planner</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. Integración del Dashboard</h2>
+            <div id="dashboardTests"></div>
+            <button onclick="testDashboardIntegration()">Probar Integración</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>5. Funcionalidades del Plan Executor</h2>
+            <div id="executorFeatures"></div>
+            <button onclick="testExecutorFeatures()">Probar Funcionalidades</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>6. Navegación del Dashboard</h2>
+            <div id="navigationTests"></div>
+            <button onclick="testNavigation()">Probar Navegación</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>7. Resumen de Pruebas</h2>
+            <div id="summaryTests"></div>
+            <button onclick="runAllTests()">Ejecutar Todas las Pruebas</button>
+        </div>
+    </div>
+
+    <script>
+        // Test results tracking
+        let testResults = {
+            scripts: { passed: 0, failed: 0, total: 0 },
+            executor: { passed: 0, failed: 0, total: 0 },
+            planner: { passed: 0, failed: 0, total: 0 },
+            dashboard: { passed: 0, failed: 0, total: 0 },
+            features: { passed: 0, failed: 0, total: 0 },
+            navigation: { passed: 0, failed: 0, total: 0 }
+        };
+
+        function addTestResult(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            container.appendChild(div);
+        }
+
+        function testScriptLoading() {
+            const tests = [
+                { name: 'Monetization Planner', global: 'MonetizationPlanner' },
+                { name: 'Plan Executor', global: 'PlanExecutor' },
+                { name: 'Dashboard', global: 'MonetizationDashboard' }
+            ];
+
+            tests.forEach(test => {
+                testResults.scripts.total++;
+                if (window[test.global]) {
+                    addTestResult('scriptTests', `✅ ${test.name} cargado correctamente`, 'success');
+                    testResults.scripts.passed++;
+                } else {
+                    addTestResult('scriptTests', `❌ ${test.name} no está disponible`, 'error');
+                    testResults.scripts.failed++;
+                }
+            });
+        }
+
+        async function testPlanExecutor() {
+            const container = 'executorTests';
+            document.getElementById(container).innerHTML = '';
+            
+            try {
+                testResults.executor.total++;
+                const executor = new PlanExecutor();
+                addTestResult(container, '✅ PlanExecutor instanciado correctamente', 'success');
+                testResults.executor.passed++;
+                
+                testResults.executor.total++;
+                if (typeof executor.activatePlan === 'function') {
+                    addTestResult(container, '✅ Método activatePlan disponible', 'success');
+                    testResults.executor.passed++;
+                } else {
+                    addTestResult(container, '❌ Método activatePlan no encontrado', 'error');
+                    testResults.executor.failed++;
+                }
+                
+                testResults.executor.total++;
+                if (typeof executor.initializeChallenges === 'function') {
+                    addTestResult(container, '✅ Método initializeChallenges disponible', 'success');
+                    testResults.executor.passed++;
+                } else {
+                    addTestResult(container, '❌ Método initializeChallenges no encontrado', 'error');
+                    testResults.executor.failed++;
+                }
+                
+                // Test mock plan activation
+                const mockPlan = {
+                    id: 'test_plan_001',
+                    travelName: 'Viaje Test Barcelona',
+                    totalBudget: 5000,
+                    currentAmount: 1500,
+                    timeFrame: 8,
+                    challenges: [
+                        {
+                            title: "Cena Benéfica Test",
+                            description: "Evento de prueba",
+                            baseRevenue: 200,
+                            difficulty: "Fácil",
+                            timeRequired: 3
+                        }
+                    ]
+                };
+                
+                testResults.executor.total++;
+                const result = await executor.activatePlan(mockPlan);
+                if (result.success) {
+                    addTestResult(container, '✅ Plan activado exitosamente', 'success');
+                    testResults.executor.passed++;
+                } else {
+                    addTestResult(container, `❌ Error al activar plan: ${result.error}`, 'error');
+                    testResults.executor.failed++;
+                }
+                
+            } catch (error) {
+                addTestResult(container, `❌ Error en PlanExecutor: ${error.message}`, 'error');
+                testResults.executor.failed++;
+            }
+        }
+
+        function testMonetizationPlanner() {
+            const container = 'plannerTests';
+            document.getElementById(container).innerHTML = '';
+            
+            try {
+                testResults.planner.total++;
+                const planner = new MonetizationPlanner();
+                addTestResult(container, '✅ MonetizationPlanner instanciado correctamente', 'success');
+                testResults.planner.passed++;
+                
+                testResults.planner.total++;
+                if (planner.challengeTemplates && planner.challengeTemplates.low) {
+                    addTestResult(container, `✅ Plantillas de retos cargadas: ${planner.challengeTemplates.low.length} retos fáciles`, 'success');
+                    testResults.planner.passed++;
+                } else {
+                    addTestResult(container, '❌ Plantillas de retos no encontradas', 'error');
+                    testResults.planner.failed++;
+                }
+                
+                testResults.planner.total++;
+                if (planner.challengeTemplates && planner.challengeTemplates.medium) {
+                    addTestResult(container, `✅ Retos medios disponibles: ${planner.challengeTemplates.medium.length} retos`, 'success');
+                    testResults.planner.passed++;
+                } else {
+                    addTestResult(container, '❌ Retos medios no encontrados', 'error');
+                    testResults.planner.failed++;
+                }
+                
+            } catch (error) {
+                addTestResult(container, `❌ Error en MonetizationPlanner: ${error.message}`, 'error');
+                testResults.planner.failed++;
+            }
+        }
+
+        function testDashboardIntegration() {
+            const container = 'dashboardTests';
+            document.getElementById(container).innerHTML = '';
+            
+            try {
+                testResults.dashboard.total++;
+                const dashboard = new MonetizationDashboard();
+                addTestResult(container, '✅ MonetizationDashboard instanciado correctamente', 'success');
+                testResults.dashboard.passed++;
+                
+                testResults.dashboard.total++;
+                if (dashboard.planExecutor && dashboard.monetizationPlanner) {
+                    addTestResult(container, '✅ PlanExecutor y MonetizationPlanner integrados', 'success');
+                    testResults.dashboard.passed++;
+                } else {
+                    addTestResult(container, '❌ Integración incompleta', 'error');
+                    testResults.dashboard.failed++;
+                }
+                
+                testResults.dashboard.total++;
+                if (typeof dashboard.activatePlan === 'function') {
+                    addTestResult(container, '✅ Método activatePlan integrado', 'success');
+                    testResults.dashboard.passed++;
+                } else {
+                    addTestResult(container, '❌ Método activatePlan no integrado', 'error');
+                    testResults.dashboard.failed++
+                }
+                
+                testResults.dashboard.total++;
+                if (dashboard.plans && dashboard.plans.size > 0) {
+                    addTestResult(container, `✅ Datos mock cargados: ${dashboard.plans.size} planes`, 'success');
+                    testResults.dashboard.passed++;
+                } else {
+                    addTestResult(container, '❌ Datos mock no cargados', 'error');
+                    testResults.dashboard.failed++;
+                }
+                
+                // Store dashboard instance for other tests
+                window.testDashboard = dashboard;
+                
+            } catch (error) {
+                addTestResult(container, `❌ Error en Dashboard: ${error.message}`, 'error');
+                testResults.dashboard.failed++;
+            }
+        }
+
+        async function testExecutorFeatures() {
+            const container = 'executorFeatures';
+            document.getElementById(container).innerHTML = '';
+            
+            try {
+                const executor = new PlanExecutor();
+                
+                testResults.features.total++;
+                if (typeof executor.validatePlan === 'function') {
+                    addTestResult(container, '✅ Método validatePlan disponible', 'success');
+                    testResults.features.passed++;
+                } else {
+                    addTestResult(container, '❌ Método validatePlan no encontrado', 'error');
+                    testResults.features.failed++;
+                }
+                
+                testResults.features.total++;
+                if (typeof executor.prepareExecutionPlan === 'function') {
+                    addTestResult(container, '✅ Método prepareExecutionPlan disponible', 'success');
+                    testResults.features.passed++;
+                } else {
+                    addTestResult(container, '❌ Método prepareExecutionPlan no encontrado', 'error');
+                    testResults.features.failed++;
+                }
+                
+                testResults.features.total++;
+                if (typeof executor.calculateChallengeDate === 'function') {
+                    addTestResult(container, '✅ Método calculateChallengeDate disponible', 'success');
+                    testResults.features.passed++;
+                } else {
+                    addTestResult(container, '❌ Método calculateChallengeDate no encontrado', 'error');
+                    testResults.features.failed++;
+                }
+                
+                // Test plan validation
+                const validPlan = {
+                    id: 'test_valid',
+                    travelName: 'Test Viaje',
+                    totalBudget: 1000,
+                    timeFrame: 4,
+                    challenges: []
+                };
+                
+                testResults.features.total++;
+                if (executor.validatePlan(validPlan)) {
+                    addTestResult(container, '✅ Validación de plan válido funciona', 'success');
+                    testResults.features.passed++;
+                } else {
+                    addTestResult(container, '❌ Validación de plan válido falla', 'error');
+                    testResults.features.failed++;
+                }
+                
+                const invalidPlan = {
+                    id: 'test_invalid',
+                    travelName: 'Test Viaje'
+                    // Missing required fields
+                };
+                
+                testResults.features.total++;
+                if (!executor.validatePlan(invalidPlan)) {
+                    addTestResult(container, '✅ Validación de plan inválido funciona', 'success');
+                    testResults.features.passed++;
+                } else {
+                    addTestResult(container, '❌ Validación de plan inválido falla', 'error');
+                    testResults.features.failed++;
+                }
+                
+            } catch (error) {
+                addTestResult(container, `❌ Error en características: ${error.message}`, 'error');
+                testResults.features.failed++;
+            }
+        }
+
+        function testNavigation() {
+            const container = 'navigationTests';
+            document.getElementById(container).innerHTML = '';
+            
+            try {
+                if (window.testDashboard) {
+                    const dashboard = window.testDashboard;
+                    
+                    testResults.navigation.total++;
+                    dashboard.loadSection('overview');
+                    addTestResult(container, '✅ Navegación a Overview funciona', 'success');
+                    testResults.navigation.passed++;
+                    
+                    testResults.navigation.total++;
+                    dashboard.loadSection('plans');
+                    addTestResult(container, '✅ Navegación a Plans funciona', 'success');
+                    testResults.navigation.passed++;
+                    
+                    testResults.navigation.total++;
+                    dashboard.loadSection('execution');
+                    addTestResult(container, '✅ Navegación a Execution funciona', 'success');
+                    testResults.navigation.passed++;
+                    
+                    testResults.navigation.total++;
+                    if (dashboard.currentSection === 'execution') {
+                        addTestResult(container, '✅ Estado de navegación actualizado correctamente', 'success');
+                        testResults.navigation.passed++;
+                    } else {
+                        addTestResult(container, '❌ Estado de navegación no actualizado', 'error');
+                        testResults.navigation.failed++;
+                    }
+                    
+                } else {
+                    addTestResult(container, '❌ Dashboard no disponible para pruebas de navegación', 'error');
+                    testResults.navigation.failed += 4;
+                    testResults.navigation.total += 4;
+                }
+            } catch (error) {
+                addTestResult(container, `❌ Error en navegación: ${error.message}`, 'error');
+                testResults.navigation.failed++;
+            }
+        }
+
+        function runAllTests() {
+            // Reset results
+            testResults = {
+                scripts: { passed: 0, failed: 0, total: 0 },
+                executor: { passed: 0, failed: 0, total: 0 },
+                planner: { passed: 0, failed: 0, total: 0 },
+                dashboard: { passed: 0, failed: 0, total: 0 },
+                features: { passed: 0, failed: 0, total: 0 },
+                navigation: { passed: 0, failed: 0, total: 0 }
+            };
+            
+            // Clear all containers
+            ['scriptTests', 'executorTests', 'plannerTests', 'dashboardTests', 'executorFeatures', 'navigationTests', 'summaryTests'].forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
+            
+            // Run tests sequentially
+            testScriptLoading();
+            
+            setTimeout(() => {
+                testMonetizationPlanner();
+                testPlanExecutor();
+                testDashboardIntegration();
+                testExecutorFeatures();
+                testNavigation();
+                
+                setTimeout(() => {
+                    // Generate summary
+                    const summary = document.getElementById('summaryTests');
+                    const totalPassed = Object.values(testResults).reduce((sum, category) => sum + category.passed, 0);
+                    const totalFailed = Object.values(testResults).reduce((sum, category) => sum + category.failed, 0);
+                    const totalTests = Object.values(testResults).reduce((sum, category) => sum + category.total, 0);
+                    
+                    addTestResult('summaryTests', `📊 Resumen de Pruebas:`, 'info');
+                    addTestResult('summaryTests', `✅ Aprobadas: ${totalPassed}/${totalTests}`, 'success');
+                    addTestResult('summaryTests', `❌ Fallidas: ${totalFailed}/${totalTests}`, 'error');
+                    addTestResult('summaryTests', `📈 Porcentaje de éxito: ${Math.round((totalPassed/totalTests) * 100)}%`, 'info');
+                    
+                    // Detailed breakdown
+                    Object.entries(testResults).forEach(([category, results]) => {
+                        if (results.total > 0) {
+                            const percentage = Math.round((results.passed/results.total) * 100);
+                            const status = percentage === 100 ? 'success' : percentage >= 80 ? 'info' : 'error';
+                            addTestResult('summaryTests', `${category}: ${results.passed}/${results.total} (${percentage}%)`, status);
+                        }
+                    });
+                }, 1000);
+            }, 500);
+        }
+
+        // Auto-run basic tests on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            testScriptLoading();
+            addTestResult('scriptTests', '✅ Página de test cargada correctamente', 'info');
+        });
+    </script>
+</body>
+</html>
