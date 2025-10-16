@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventoo Cognitive - La Plataforma Mágica donde los Deseos se Hacen Realidad</title>
+    
+    <!-- Meta Tags SEO -->
+    <meta name="description" content="Eventoo Cognitive: La plataforma definitiva para eventos mágicos personales y educativos. Con IA, gamificación y el poder del Genio Djinx. Crea eventos épicos gratis.">
+    <meta name="keywords" content="eventos, magia, IA, gamificación, celebraciones, educación, genio, djinx, crowdfunding, eventos mágicos">
+    <meta name="author" content="Eventoo Cognitive">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Eventoo Cognitive - La Plataforma Mágica">
+    <meta property="og:description" content="Donde los deseos se hacen realidad. Crea eventos épicos con IA y magia.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eventoo.es">
+    <meta property="og:image" content="https://i.postimg.cc/NjGDYqJz/djink.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Eventoo Cognitive - La Plataforma Mágica">
+    <meta name="twitter:description" content="La plataforma definitiva para eventos mágicos personales y educativos.">
+    <meta name="twitter:image" content="https://i.postimg.cc/NjGDYqJz/djink.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧞</text></svg>">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --gold: #f59e0b;
+            --dark: #0f172a;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Estrellas animadas de fondo */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        /* Partículas mágicas */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .magic-particle {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Efecto cristal (glassmorphism) */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Gradiente animado */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Animación de aparición */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        /* Efecto de brillo */
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shine-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        /* Botones mágicos */
+        .magic-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .magic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .magic-button:active {
+            transform: translateY(0);
+        }
+        
+        /* Scroll personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Estrellas de fondo -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Navegación -->
+    <nav class="fixed top-0 w-full z-50 glass">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="text-3xl">🧞</div>
+                    <span class="text-xl font-bold">Eventoo Cognitive</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#inicio" class="hover:text-blue-400 transition-colors">Inicio</a>
+                    <a href="#paquetes" class="hover:text-blue-400 transition-colors">Paquetes</a>
+                    <a href="#educacion" class="hover:text-blue-400 transition-colors">Educación</a>
+                    <a href="#precios" class="hover:text-blue-400 transition-colors">Precios</a>
+                    <a href="#contacto" class="hover:text-blue-400 transition-colors">Contacto</a>
+                </div>
+                
+                <button class="magic-button bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full font-semibold">
+                    Comenzar Magia
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="inicio" class="min-h-screen flex items-center justify-center pt-20 px-4">
+        <div class="container mx-auto text-center">
+            <!-- Genio Djink -->
+            <div class="mb-8 fade-in-up">
+                <div class="inline-block relative">
+                    <img src="https://i.postimg.cc/NjGDYqJz/djink.png" 
+                         alt="Genio Djink" 
+                         class="w-32 h-32 mx-auto mb-4 magic-particle">
+                    <div class="absolute -top-4 -right-4 text-6xl">✨</div>
+                    <div class="absolute -bottom-4 -left-4 text-4xl">💫</div>
+                </div>
+            </div>
+            
+            <!-- Título Principal -->
+            <h1 class="hero-title text-5xl md:text-7xl font-bold mb-6 fade-in-up">
+                <span class="text-transparent bg-clip-text animated-gradient">
+                    La Plataforma Mágica
+                </span>
+                <br>
+                <span class="text-white">donde los Deseos se Hacen Realidad</span>
+            </h1>
+            
+            <!-- Subtítulo -->
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto fade-in-up">
+                🧙‍♂️ "En el reino de Eventoo, cada evento es una aventura épica, cada participante un héroe, 
+                y cada mago educador tiene el poder de transformar el aprendizaje en pura magia..."
+            </p>
+            
+            <!-- Botón CTA -->
+            <div class="mb-12 fade-in-up">
+                <button class="magic-button shine-effect bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-12 py-4 rounded-full text-xl font-bold">
+                    🪄 Crea tu Primer Evento Mágico
+                </button>
+            </div>
+            
+            <!-- Características -->
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-in-up">
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-4xl mb-4">🎮</div>
+                    <h3 class="text-xl font-bold mb-2">Gamificación Épica</h3>
+                    <p class="text-gray-400">Transforma cualquier evento en una aventura interactiva con retos, recompensas y magia</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold mb-2">IA Inteligente</h3>
+                    <p class="text-gray-400">El Genio Djinx potencia tus eventos con inteligencia artificial y personalización mágica</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold mb-2">Monetización Real</h3>
+                    <p class="text-gray-400">Convierte la magia en ingresos con nuestro sistema de monetización integrado</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección de Paquetes de Gamificación -->
+    <section id="paquetes" class="py-20 px-4">
+        <div class="container mx-auto max-w-7xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    <span class="text-transparent bg-clip-text animated-gradient">Sistemas de Gamificación</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Tres mundos mágicos de aventura educativa, cada uno con su sistema completo de gamificación, 
+                    retos desafiantes y colecciones monetizables.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- EcoWarriors -->
+                <div class="card-hover glass rounded-2xl p-8 border border-green-400/30 cursor-pointer" onclick="window.location.href='ecologia-gamification.html'">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🌱</div>
+                        <h3 class="text-2xl font-bold text-green-400 mb-2">EcoWarriors</h3>
+                        <p class="text-gray-400 mb-4">Sistema de gamificación ecológico</p>
+                        <div class="text-3xl font-bold text-green-400">€150</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">15 retos ambientales progresivos</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Sistema de badges y leaderboards</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">15 colecciones monetizables</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Campañas de marketing automáticas</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                            Explorar EcoWarriors
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- PathFinders -->
+                <div class="card-hover glass rounded-2xl p-8 border border-orange-400/30 cursor-pointer" onclick="window.location.href='aventura-gamification.html'">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🗺️</div>
+                        <h3 class="text-2xl font-bold text-orange-400 mb-2">PathFinders</h3>
+                        <p class="text-gray-400 mb-4">Sistema de gamificación de exploración</p>
+                        <div class="text-3xl font-bold text-orange-400">€200</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">12 ubicaciones explorables</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">Mapa interactivo de aventuras</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">12 colecciones temáticas</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">Sistema de exploración progresiva</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                            Explorar PathFinders
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- InnoMinds -->
+                <div class="card-hover glass rounded-2xl p-8 border border-purple-400/30 cursor-pointer" onclick="window.location.href='innovacion-gamification.html'">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🧠</div>
+                        <h3 class="text-2xl font-bold text-purple-400 mb-2">InnoMinds</h3>
+                        <p class="text-gray-400 mb-4">Sistema de gamificación de innovación</p>
+                        <div class="text-3xl font-bold text-purple-400">€300</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">20 proyectos innovadores</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Laboratorio de innovación</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">20 colecciones tecnológicas</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Sistema de patentes y startups</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                            Innovar con InnoMinds
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Total Monetization Potential -->
+            <div class="glass rounded-2xl p-8 border border-gray-400/30 text-center">
+                <h3 class="text-2xl font-bold mb-4">
+                    <span class="text-transparent bg-clip-text animated-gradient">Potencial Total de Monetización</span>
+                </h3>
+                <div class="text-5xl font-bold text-white mb-2">€650</div>
+                <p class="text-gray-400">Por estudiante al completar los 3 sistemas de gamificación</p>
+                <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-bold text-green-400">€150</div>
+                        <div class="text-sm text-gray-400">EcoWarriors</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-orange-400">€200</div>
+                        <div class="text-sm text-gray-400">PathFinders</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-purple-400">€300</div>
+                        <div class="text-sm text-gray-400">InnoMinds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección de Características -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    <span class="text-transparent bg-clip-text animated-gradient">¿Por qué Eventoo Cognitive?</span>
+                </h2>
+                <p class="text-xl text-gray-400">
+                    La única plataforma que combina magia, IA y gamificación para crear experiencias educativas inolvidables
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-4xl mb-4">🎮</div>
+                    <h3 class="text-xl font-bold mb-2">Gamificación Completa</h3>
+                    <p class="text-gray-400">Sistemas integrales con badges, leaderboards y retos progresivos</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold mb-2">IA Avanzada</h3>
+                    <p class="text-gray-400">El Genio Djinx personaliza cada experiencia educativa</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold mb-2">Monetización Real</h3>
+                    <p class="text-gray-400">Cada logro desbloquea colecciones monetizables automáticamente</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-4xl mb-4">🌟</div>
+                    <h3 class="text-xl font-bold mb-2">Experiencias Únicas</h3>
+                    <p class="text-gray-400">Cada paquete ofrece un mundo completamente diferente</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 text-center glass border-t border-gray-400/20">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="text-3xl">🧞</div>
+                <span class="text-xl font-bold">Eventoo Cognitive</span>
+            </div>
+            <p class="text-gray-400 mb-4">
+                Transformando el aprendizaje en magia pura
+            </p>
+            <p class="text-sm text-gray-500">
+                © 2025 Eventoo Cognitive EDU. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Generar estrellas aleatorias
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Animaciones al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos
+        document.querySelectorAll('.card-hover, .glass').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Inicializar
+        createStars();
+        
+        // Efecto de magia en botones
+        document.querySelectorAll('.magic-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Crear partícula de magia
+                const particle = document.createElement('div');
+                particle.innerHTML = '✨';
+                particle.style.position = 'absolute';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '9999';
+                particle.style.fontSize = '24px';
+                particle.style.animation = 'float 1s ease-out forwards';
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

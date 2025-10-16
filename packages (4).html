@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes Gamificados - Eventoo Cognitive EDU</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Cards */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Progress bars */
+        .progress-bar {
+            background: linear-gradient(90deg, #10b981, #34d399);
+            transition: width 0.5s ease;
+        }
+        
+        /* Badge animations */
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .badge-earned {
+            animation: badgePulse 2s infinite;
+        }
+        
+        /* Leaderboard animation */
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .leaderboard-item {
+            animation: slideIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="py-12 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold mb-4">
+                <span class="text-transparent bg-clip-text animated-gradient">Paquetes</span>
+                Gamificados
+            </h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                🧙‍♂️ "Cada paquete es un mundo de aventuras educativas que transforman el aprendizaje en magia..."
+            </p>
+        </div>
+    </header>
+    
+    <!-- Packages Grid -->
+    <main class="py-12">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Ecología Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-green-400/30 cursor-pointer" onclick="window.location.href='ecologia-gamification.html'">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🌱</div>
+                        <h3 class="text-2xl font-bold text-green-400 mb-2">EcoWarriors</h3>
+                        <p class="text-gray-400 mb-4">Sistema de gamificación ecológico completo</p>
+                        <div class="text-3xl font-bold text-green-400">€150</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">15 retos ambientales progresivos</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Sistema de badges y leaderboards</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">15 colecciones monetizables</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Campañas de marketing automáticas</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Progreso actual</div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="progress-bar h-2 rounded-full" style="width: 47%"></div>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">7/15 retos completados</div>
+                    </div>
+                </div>
+                
+                <!-- Aventura Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-orange-400/30 cursor-pointer" onclick="window.location.href='aventura-gamification.html'">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🗺️</div>
+                        <h3 class="text-2xl font-bold text-orange-400 mb-2">PathFinders</h3>
+                        <p class="text-gray-400 mb-4">Sistema de gamificación de exploración</p>
+                        <div class="text-3xl font-bold text-orange-400">€200</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">12 ubicaciones explorables</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">Mapa interactivo de aventuras</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">12 colecciones temáticas</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">Sistema de exploración progresiva</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Progreso actual</div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="progress-bar h-2 rounded-full" style="width: 42%"></div>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">5/12 ubicaciones exploradas</div>
+                    </div>
+                </div>
+                
+                <!-- Innovación Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-purple-400/30 cursor-pointer" onclick="window.location.href='innovacion-gamification.html'">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🧠</div>
+                        <h3 class="text-2xl font-bold text-purple-400 mb-2">InnoMinds</h3>
+                        <p class="text-gray-400 mb-4">Sistema de gamificación de innovación</p>
+                        <div class="text-3xl font-bold text-purple-400">€300</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">20 proyectos innovadores</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Laboratorio de innovación</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">20 colecciones tecnológicas</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Sistema de patentes y startups</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Progreso actual</div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="progress-bar h-2 rounded-full" style="width: 40%"></div>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">8/20 proyectos completados</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gamification Features -->
+            <div class="glass rounded-2xl p-8 mb-12 border border-gray-400/30">
+                <h2 class="text-3xl font-bold text-center mb-8">
+                    <span class="text-transparent bg-clip-text animated-gradient">Características de Gamificación</span>
+                </h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🏆</div>
+                        <h3 class="font-bold text-lg mb-2">Sistema de Badges</h3>
+                        <p class="text-sm text-gray-400">Insignias únicas por cada logro alcanzado</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">📊</div>
+                        <h3 class="font-bold text-lg mb-2">Leaderboards</h3>
+                        <p class="text-sm text-gray-400">Rankings dinámicos con competencia sana</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">💎</div>
+                        <h3 class="font-bold text-lg mb-2">Colecciones</h3>
+                        <p class="text-sm text-gray-400">Productos temáticos desbloqueables</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🚀</div>
+                        <h3 class="font-bold text-lg mb-2">Marketing Automático</h3>
+                        <p class="text-sm text-gray-400">Campañas activadas por logros</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Monetization System -->
+            <div class="glass rounded-2xl p-8 border border-gray-400/30">
+                <h2 class="text-3xl font-bold text-center mb-8">
+                    <span class="text-transparent bg-clip-text animated-gradient">Sistema de Monetización</span>
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-400 mb-2">Desbloqueo de Retos</div>
+                        <p class="text-gray-400 mb-4">Cada reto completado activa una colección monetizable</p>
+                        <div class="text-3xl">🔓 → 💰</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-orange-400 mb-2">Campañas Djink</div>
+                        <p class="text-gray-400 mb-4">Marketing automatizado para cada colección desbloqueada</p>
+                        <div class="text-3xl">🎯 → 📈</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-purple-400 mb-2">Ingresos Escalonados</div>
+                        <p class="text-gray-400 mb-4">Mayor dificultad = mayor monetización</p>
+                        <div class="text-3xl">📊 → 💎</div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <div class="inline-block bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg p-6 border border-green-400/30">
+                        <h3 class="font-bold text-xl mb-2">💰 Potencial de Ingresos</h3>
+                        <div class="grid grid-cols-3 gap-6 text-center">
+                            <div>
+                                <div class="text-2xl font-bold text-green-400">€150</div>
+                                <div class="text-sm text-gray-400">EcoWarriors</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-orange-400">€200</div>
+                                <div class="text-sm text-gray-400">PathFinders</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-purple-400">€300</div>
+                                <div class="text-sm text-gray-400">InnoMinds</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-xl font-bold text-white">Total: €650 por estudiante</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400">
+                © 2025 Eventoo Cognitive EDU - Transformando el aprendizaje en aventura
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

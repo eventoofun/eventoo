@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gamificado Ecológico - Eventoo</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a3a 50%, #064e3b 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #10b981, #059669, #34d399, #6ee7b7);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Cards */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Progress bars */
+        .progress-bar {
+            background: linear-gradient(90deg, #10b981, #34d399);
+            transition: width 0.5s ease;
+        }
+        
+        /* Badge animations */
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .badge-earned {
+            animation: badgePulse 2s infinite;
+        }
+        
+        /* Leaderboard animation */
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .leaderboard-item {
+            animation: slideIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="py-12 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold mb-4">
+                <span class="text-transparent bg-clip-text animated-gradient">EcoWarriors</span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                🌱 "Cada acción cuenta, cada reto completado salva el planeta y desbloquea colecciones exclusivas"
+            </p>
+            <div class="mt-6 flex justify-center gap-4">
+                <div class="glass rounded-lg px-6 py-3">
+                    <span class="text-green-400 font-bold text-xl">Nivel 1</span>
+                    <p class="text-sm text-gray-400">Guardián Inicial</p>
+                </div>
+                <div class="glass rounded-lg px-6 py-3">
+                    <span class="text-green-400 font-bold text-xl">1,250</span>
+                    <p class="text-sm text-gray-400">EcoPuntos</p>
+                </div>
+                <div class="glass rounded-lg px-6 py-3">
+                    <span class="text-green-400 font-bold text-xl">7/15</span>
+                    <p class="text-sm text-gray-400">Retos Completados</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-12">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="grid lg:grid-cols-3 gap-8">
+                
+                <!-- Left Column: Challenges -->
+                <div class="lg:col-span-2 space-y-8">
+                    
+                    <!-- Current Challenge -->
+                    <div class="glass rounded-2xl p-8 border border-green-400/30">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-green-400">Reto Activo</h2>
+                            <div class="text-sm text-gray-400">Día 3 de 7</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg p-6 mb-6">
+                            <h3 class="text-xl font-bold mb-3">🌊 "Operación Limpieza Oceánica"</h3>
+                            <p class="text-gray-300 mb-4">Recoge 50 artículos de plástico de las playas locales y documenta tu progreso con fotos.</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span>Progreso</span>
+                                    <span>32/50 objetos</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-3">
+                                    <div class="progress-bar h-3 rounded-full" style="width: 64%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-400">+150</div>
+                                <div class="text-sm text-gray-400">EcoPuntos</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-400">🌊</div>
+                                <div class="text-sm text-gray-400">Colección Marina</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Available Challenges -->
+                    <div class="glass rounded-2xl p-8 border border-green-400/30">
+                        <h2 class="text-2xl font-bold text-green-400 mb-6">Retos Disponibles</h2>
+                        
+                        <div class="space-y-4">
+                            <!-- Challenge 1 -->
+                            <div class="card-hover bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-lg p-4 border border-green-400/20 cursor-pointer" onclick="startChallenge('forest')">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-bold text-lg">🌲 "Guardián del Bosque"</h3>
+                                        <p class="text-gray-400 text-sm">Planta 20 árboles nativos en tu comunidad</p>
+                                        <div class="flex gap-4 mt-2 text-xs text-gray-500">
+                                            <span>⏱️ 14 días</span>
+                                            <span>🏆 Nivel 2</span>
+                                            <span>💎 200 EcoPuntos</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl mb-1">🌲</div>
+                                        <div class="text-xs text-gray-400">Colección Bosque</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Challenge 2 -->
+                            <div class="card-hover bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-lg p-4 border border-blue-400/20 cursor-pointer" onclick="startChallenge('energy')">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-bold text-lg">⚡ "Energía Limpia"</h3>
+                                        <p class="text-gray-400 text-sm">Reduce tu consumo energético en 30% durante 30 días</p>
+                                        <div class="flex gap-4 mt-2 text-xs text-gray-500">
+                                            <span>⏱️ 30 días</span>
+                                            <span>🏆 Nivel 3</span>
+                                            <span>💎 300 EcoPuntos</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl mb-1">⚡</div>
+                                        <div class="text-xs text-gray-400">Colección Energía</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Challenge 3 -->
+                            <div class="card-hover bg-gradient-to-r from-orange-600/20 to-red-600/20 rounded-lg p-4 border border-orange-400/20 cursor-pointer" onclick="startChallenge('zero')">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-bold text-lg">♻️ "Cero Residuos"</h3>
+                                        <p class="text-gray-400 text-sm">Implementa sistema de reciclaje completo en tu hogar</p>
+                                        <div class="flex gap-4 mt-2 text-xs text-gray-500">
+                                            <span>⏱️ 21 días</span>
+                                            <span>🏆 Nivel 4</span>
+                                            <span>💎 250 EcoPuntos</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl mb-1">♻️</div>
+                                        <div class="text-xs text-gray-400">Colección Reciclaje</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Badges Collection -->
+                    <div class="glass rounded-2xl p-8 border border-green-400/30">
+                        <h2 class="text-2xl font-bold text-green-400 mb-6">Insignias Conseguidas</h2>
+                        
+                        <div class="grid grid-cols-6 gap-4">
+                            <!-- Earned Badges -->
+                            <div class="badge-earned text-center">
+                                <div class="text-4xl mb-2">🌱</div>
+                                <div class="text-xs text-gray-400">Sembrador</div>
+                            </div>
+                            <div class="badge-earned text-center">
+                                <div class="text-4xl mb-2">🌊</div>
+                                <div class="text-xs text-gray-400">Guardián Marino</div>
+                            </div>
+                            <div class="badge-earned text-center">
+                                <div class="text-4xl mb-2">♻️</div>
+                                <div class="text-xs text-gray-400">Reciclador</div>
+                            </div>
+                            <div class="badge-earned text-center">
+                                <div class="text-4xl mb-2">🌍</div>
+                                <div class="text-xs text-gray-400">Protector</div>
+                            </div>
+                            <div class="badge-earned text-center">
+                                <div class="text-4xl mb-2">🦋</div>
+                                <div class="text-xs text-gray-400">Biodiversidad</div>
+                            </div>
+                            <div class="badge-earned text-center">
+                                <div class="text-4xl mb-2">🌿</div>
+                                <div class="text-xs text-gray-400">Conservador</div>
+                            </div>
+                            
+                            <!-- Locked Badges -->
+                            <div class="text-center opacity-30">
+                                <div class="text-4xl mb-2">🌲</div>
+                                <div class="text-xs text-gray-400">Bosques</div>
+                            </div>
+                            <div class="text-center opacity-30">
+                                <div class="text-4xl mb-2">⚡</div>
+                                <div class="text-xs text-gray-400">Energía</div>
+                            </div>
+                            <div class="text-center opacity-30">
+                                <div class="text-4xl mb-2">🦅</div>
+                                <div class="text-xs text-gray-400">Fauna</div>
+                            </div>
+                            <div class="text-center opacity-30">
+                                <div class="text-4xl mb-2">🏔️</div>
+                                <div class="text-xs text-gray-400">Montañas</div>
+                            </div>
+                            <div class="text-center opacity-30">
+                                <div class="text-4xl mb-2">💧</div>
+                                <div class="text-xs text-gray-400">Agua</div>
+                            </div>
+                            <div class="text-center opacity-30">
+                                <div class="text-4xl mb-2">🔥</div>
+                                <div class="text-xs text-gray-400">Fuego</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Leaderboard & Stats -->
+                <div class="space-y-8">
+                    
+                    <!-- Leaderboard -->
+                    <div class="glass rounded-2xl p-8 border border-green-400/30">
+                        <h2 class="text-2xl font-bold text-green-400 mb-6">🏆 EcoLíderes</h2>
+                        
+                        <div class="space-y-3">
+                            <!-- Top 5 -->
+                            <div class="leaderboard-item flex items-center justify-between bg-gradient-to-r from-yellow-500/20 to-amber-500/20 rounded-lg p-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-2xl">🥇</div>
+                                    <div>
+                                        <div class="font-bold">EcoMaster_Alex</div>
+                                        <div class="text-xs text-gray-400">Nivel 5</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold text-green-400">2,450</div>
+                                    <div class="text-xs text-gray-400">EcoPuntos</div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaderboard-item flex items-center justify-between bg-gradient-to-r from-gray-400/20 to-gray-500/20 rounded-lg p-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-2xl">🥈</div>
+                                    <div>
+                                        <div class="font-bold">Green_Sofia</div>
+                                        <div class="text-xs text-gray-400">Nivel 4</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold text-green-400">2,180</div>
+                                    <div class="text-xs text-gray-400">EcoPuntos</div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaderboard-item flex items-center justify-between bg-gradient-to-r from-orange-600/20 to-red-600/20 rounded-lg p-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-2xl">🥉</div>
+                                    <div>
+                                        <div class="font-bold">Tú</div>
+                                        <div class="text-xs text-gray-400">Nivel 1</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold text-green-400">1,250</div>
+                                    <div class="text-xs text-gray-400">EcoPuntos</div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaderboard-item flex items-center justify-between bg-gray-700/30 rounded-lg p-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-lg">4</div>
+                                    <div>
+                                        <div class="font-bold">Earth_Warrior</div>
+                                        <div class="text-xs text-gray-400">Nivel 3</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold text-green-400">980</div>
+                                    <div class="text-xs text-gray-400">EcoPuntos</div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaderboard-item flex items-center justify-between bg-gray-700/30 rounded-lg p-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-lg">5</div>
+                                    <div>
+                                        <div class="font-bold">Climate_Hero</div>
+                                        <div class="text-xs text-gray-400">Nivel 2</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold text-green-400">750</div>
+                                    <div class="text-xs text-gray-400">EcoPuntos</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Collections Unlocked -->
+                    <div class="glass rounded-2xl p-8 border border-green-400/30">
+                        <h2 class="text-2xl font-bold text-green-400 mb-6">Colecciones Desbloqueadas</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-lg p-4 border border-blue-400/30">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="font-bold">🌊 Colección Marina</h3>
+                                    <span class="text-xs bg-blue-500/30 px-2 py-1 rounded">Activa</span>
+                                </div>
+                                <p class="text-sm text-gray-400 mb-3">Productos ecológicos con temática marina</p>
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="text-center">
+                                        <div class="text-2xl">🐠</div>
+                                        <div class="text-xs text-gray-400">Pez</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl">🐙</div>
+                                        <div class="text-xs text-gray-400">Pulpo</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl">🦀</div>
+                                        <div class="text-xs text-gray-400">Cangrejo</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl">🐢</div>
+                                        <div class="text-xs text-gray-400">Tortuga</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <span class="text-green-400 font-bold">€45 recaudados</span>
+                                    <p class="text-xs text-gray-400">5 productos vendidos</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg p-4 border border-green-400/30">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="font-bold">🌿 Colección Conservación</h3>
+                                    <span class="text-xs bg-green-500/30 px-2 py-1 rounded">Activa</span>
+                                </div>
+                                <p class="text-sm text-gray-400 mb-3">Productos sostenibles de conservación</p>
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="text-center">
+                                        <div class="text-2xl">🌱</div>
+                                        <div class="text-xs text-gray-400">Planta</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl">🦋</div>
+                                        <div class="text-xs text-gray-400">Mariposa</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl">🐝</div>
+                                        <div class="text-xs text-gray-400">Abeja</div>
+                                    </div>
+                                    <div class="text-center opacity-50">
+                                        <div class="text-2xl">🔒</div>
+                                        <div class="text-xs text-gray-400">Próximo</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <span class="text-green-400 font-bold">€32 recaudados</span>
+                                    <p class="text-xs text-gray-400">3 productos vendidos</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-700/30 rounded-lg p-4 border border-gray-600/30 opacity-60">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="font-bold">🌲 Colección Bosque</h3>
+                                    <span class="text-xs bg-gray-500/30 px-2 py-1 rounded">Bloqueada</span>
+                                </div>
+                                <p class="text-sm text-gray-400 mb-3">Completa "Guardián del Bosque" para desbloquear</p>
+                                <div class="text-center">
+                                    <div class="text-2xl">🔒</div>
+                                    <div class="text-xs text-gray-400">Próximo reto: Plantar árboles</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monetization Stats -->
+                    <div class="glass rounded-2xl p-8 border border-green-400/30">
+                        <h2 class="text-2xl font-bold text-green-400 mb-6">💰 Monetización</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Total Recaudado:</span>
+                                <span class="font-bold text-green-400">€77</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Productos Vendidos:</span>
+                                <span class="font-bold text-green-400">8</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Próximo Pago:</span>
+                                <span class="font-bold text-green-400">€150</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Colecciones Activas:</span>
+                                <span class="font-bold text-green-400">2/15</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg">
+                            <h3 class="font-bold mb-2">🎯 Próximo Objetivo</h3>
+                            <p class="text-sm text-gray-400 mb-2">Completa 3 retos más para desbloquear la colección "Energía Limpia"</p>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 47%"></div>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">7/15 retos completados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Marketing Campaign Modal -->
+    <div id="campaignModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="glass rounded-2xl p-8 max-w-2xl w-full border border-green-400/30">
+                <h2 class="text-3xl font-bold text-green-400 mb-4">🚀 Campaña de Marketing Activada</h2>
+                <p class="text-gray-300 mb-6">¡Felicidades! Has desbloqueado una nueva colección y Djink está promocionando tus productos.</p>
+                
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-400">1,247</div>
+                        <div class="text-sm text-gray-400">Impresiones</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-400">89</div>
+                        <div class="text-sm text-gray-400">Clicks</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-400">5</div>
+                        <div class="text-sm text-gray-400">Ventas</div>
+                    </div>
+                </div>
+                
+                <button onclick="closeCampaignModal()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    Continuar Aventura
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Challenge System
+        function startChallenge(type) {
+            const challenges = {
+                forest: {
+                    title: "🌲 Guardián del Bosque",
+                    description: "Planta 20 árboles nativos en tu comunidad",
+                    duration: "14 días",
+                    points: 200,
+                    collection: "🌲 Colección Bosque"
+                },
+                energy: {
+                    title: "⚡ Energía Limpia", 
+                    description: "Reduce tu consumo energético en 30% durante 30 días",
+                    duration: "30 días",
+                    points: 300,
+                    collection: "⚡ Colección Energía"
+                },
+                zero: {
+                    title: "♻️ Cero Residuos",
+                    description: "Implementa sistema de reciclaje completo en tu hogar",
+                    duration: "21 días", 
+                    points: 250,
+                    collection: "♻️ Colección Reciclaje"
+                }
+            };
+            
+            const challenge = challenges[type];
+            alert(`¡Reto Iniciado!\n\n${challenge.title}\n${challenge.description}\n\nDuración: ${challenge.duration}\nRecompensa: ${challenge.points} EcoPuntos + ${challenge.collection}`);
+            
+            // Simulate campaign activation
+            setTimeout(() => {
+                document.getElementById('campaignModal').classList.remove('hidden');
+            }, 2000);
+        }
+        
+        function closeCampaignModal() {
+            document.getElementById('campaignModal').classList.add('hidden');
+        }
+        
+        // Simulate progress updates
+        setInterval(() => {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const currentWidth = parseInt(bar.style.width) || 0;
+                if (currentWidth < 100) {
+                    bar.style.width = Math.min(currentWidth + Math.random() * 5, 100) + '%';
+                }
+            });
+        }, 5000);
+        
+        // Animate leaderboard
+        setInterval(() => {
+            const leaderboardItems = document.querySelectorAll('.leaderboard-item');
+            leaderboardItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.animation = 'none';
+                    setTimeout(() => {
+                        item.style.animation = `slideIn 0.5s ease forwards`;
+                    }, 10);
+                }, index * 100);
+            });
+        }, 10000);
+    </script>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400">
+                © 2025 Eventoo Cognitive EDU - Transformando el aprendizaje en aventura
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Casa de Magia - Gestor de Viajes | Eventoo</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Dashboard styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 27, 75, 0.9) 100%);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-content {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+        }
+        
+        /* Navigation */
+        .nav-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.3) 0%, transparent 100%);
+            border-left: 3px solid #667eea;
+        }
+        
+        /* Stats cards */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        /* Travel planner integration */
+        .travel-widget {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Quick actions */
+        .quick-action {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quick-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.2);
+        }
+        
+        /* Progress rings */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+        
+        /* Notifications */
+        .notification {
+            animation: slideInRight 0.3s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Layout -->
+    <div class="dashboard-grid">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar glass">
+            <div class="p-6">
+                <div class="text-center mb-8">
+                    <div class="text-4xl mb-2">🧞</div>
+                    <h2 class="text-xl font-bold">Casa de Magia</h2>
+                    <p class="text-sm text-gray-400">Dashboard Principal</p>
+                </div>
+                
+                <nav class="space-y-2">
+                    <div class="nav-item active p-3 rounded-lg" data-section="overview">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🏠</span>
+                            <span class="font-medium">Resumen</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item p-3 rounded-lg" data-section="travel">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">✈️</span>
+                            <span class="font-medium">Travel Planner</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item p-3 rounded-lg" data-section="gamification">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🎮</span>
+                            <span class="font-medium">Gamificación</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item p-3 rounded-lg" data-section="finances">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">💰</span>
+                            <span class="font-medium">Finanzas</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item p-3 rounded-lg" data-section="students">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">👥</span>
+                            <span class="font-medium">Estudiantes</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item p-3 rounded-lg" data-section="settings">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">⚙️</span>
+                            <span class="font-medium">Configuración</span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="p-6 border-t border-gray-600/30">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <span class="font-bold">MG</span>
+                    </div>
+                    <div>
+                        <div class="font-medium">Mago Gestor</div>
+                        <div class="text-xs text-gray-400">Casa Principal</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="p-6 border-b border-gray-600/30">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold">
+                            <span class="text-transparent bg-clip-text animated-gradient">Dashboard Casa de Magia</span>
+                        </h1>
+                        <p class="text-gray-400">Gestión integral de viajes y gamificación educativa</p>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <button class="glass px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                            <span class="text-xl">🔔</span>
+                            <span class="ml-2 text-sm">3 nuevas</span>
+                        </button>
+                        <button class="glass px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                            <span class="text-xl">💬</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Overview Section -->
+            <section id="overview" class="p-6">
+                <!-- Stats Cards -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-blue-400">€12,450</div>
+                                <div class="text-gray-400">Recaudado Total</div>
+                            </div>
+                            <div class="text-4xl">💰</div>
+                        </div>
+                        <div class="text-sm text-green-400">+15% este mes</div>
+                    </div>
+                    
+                    <div class="stat-card rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-green-400">156</div>
+                                <div class="text-gray-400">Estudiantes Activos</div>
+                            </div>
+                            <div class="text-4xl">👥</div>
+                        </div>
+                        <div class="text-sm text-green-400">+8 nuevos</div>
+                    </div>
+                    
+                    <div class="stat-card rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-purple-400">8</div>
+                                <div class="text-gray-400">Viajes Planificados</div>
+                            </div>
+                            <div class="text-4xl">✈️</div>
+                        </div>
+                        <div class="text-sm text-yellow-400">3 en proceso</div>
+                    </div>
+                    
+                    <div class="stat-card rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-yellow-400">94%</div>
+                                <div class="text-gray-400">Éxito en Metas</div>
+                            </div>
+                            <div class="text-4xl">🎯</div>
+                        </div>
+                        <div class="text-sm text-green-400">Excelente!</div>
+                    </div>
+                </div>
+                
+                <!-- Travel Widget -->
+                <div class="travel-widget rounded-2xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-blue-400 mb-2">🧞 Genio Djink Travel Planner</h3>
+                            <p class="text-gray-400">Organiza el viaje de fin de curso más épico</p>
+                        </div>
+                        <div class="text-6xl genio-active">🧞</div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="glass rounded-xl p-4 text-center">
+                            <div class="text-2xl font-bold text-green-400 mb-2">3</div>
+                            <div class="text-sm text-gray-400">Viajes Completados</div>
+                        </div>
+                        <div class="glass rounded-xl p-4 text-center">
+                            <div class="text-2xl font-bold text-blue-400 mb-2">€8,900</div>
+                            <div class="text-sm text-gray-400">Fondos Recaudados</div>
+                        </div>
+                        <div class="glass rounded-xl p-4 text-center">
+                            <div class="text-2xl font-bold text-purple-400 mb-2">156</div>
+                            <div class="text-sm text-gray-400">Estudiantes Felices</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button onclick="window.location.href='travel-planner.html'" 
+                                class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                            🪄 Planificar Nuevo Viaje Mágico
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="quick-action rounded-2xl p-6">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">🎯</div>
+                            <h4 class="text-xl font-bold mb-2">Crear Reto</h4>
+                            <p class="text-gray-400 text-sm mb-4">Nuevo desafío para recaudar fondos</p>
+                            <button class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-lg font-medium">
+                                Crear Reto
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-action rounded-2xl p-6">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">📊</div>
+                            <h4 class="text-xl font-bold mb-2">Ver Estadísticas</h4>
+                            <p class="text-gray-400 text-sm mb-4">Análisis detallado de rendimiento</p>
+                            <button class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg font-medium">
+                                Ver Reportes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-action rounded-2xl p-6">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">👥</div>
+                            <h4 class="text-xl font-bold mb-2">Gestionar Equipo</h4>
+                            <p class="text-gray-400 text-sm mb-4">Administrar participantes</p>
+                            <button class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-lg font-medium">
+                                Gestionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Travel Section -->
+            <section id="travel" class="p-6 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-blue-400 mb-4">✈️ Gestión de Viajes</h2>
+                    <p class="text-gray-400">Control total sobre todos los viajes planificados</p>
+                </div>
+                
+                <!-- Active Travels -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="glass rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-green-400">Barcelona Cultural</h3>
+                            <span class="text-xs bg-green-500/30 text-green-400 px-2 py-1 rounded">Activo</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">Viaje cultural para 25 estudiantes</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Recaudado:</span>
+                                <span class="text-green-400 font-bold">€6,250 / €8,500</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 73%"></div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                Ver Detalles
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-orange-400">Aventura Pirineos</h3>
+                            <span class="text-xs bg-orange-500/30 text-orange-400 px-2 py-1 rounded">En Proceso</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">Viaje de aventura para 18 estudiantes</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Recaudado:</span>
+                                <span class="text-orange-400 font-bold">€2,100 / €7,200</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 29%"></div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                Ver Detalles
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6 border-2 border-dashed border-blue-400/30">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">➕</div>
+                            <h3 class="text-xl font-bold text-blue-400 mb-2">Nuevo Viaje</h3>
+                            <p class="text-gray-400 text-sm mb-4">Crear un nuevo viaje mágico</p>
+                            <button onclick="window.location.href='travel-planner.html'" 
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                Crear Viaje
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Travel Statistics -->
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-6">📊 Estadísticas de Viajes</h3>
+                    
+                    <div class="grid md:grid-cols-4 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-400 mb-2">€45,670</div>
+                            <div class="text-sm text-gray-400">Total Recaudado</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-400 mb-2">12</div>
+                            <div class="text-sm text-gray-400">Viajes Completados</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-400 mb-2">98%</div>
+                            <div class="text-sm text-gray-400">Satisfacción</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-yellow-400 mb-2">1,247</div>
+                            <div class="text-sm text-gray-400">Estudiantes Viajados</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Other sections would go here -->
+            <section id="gamification" class="p-6 hidden">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-purple-400 mb-4">🎮 Gamificación</h2>
+                    <p class="text-gray-400">Gestión de sistemas de gamificación</p>
+                </div>
+            </section>
+            
+            <section id="finances" class="p-6 hidden">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-green-400 mb-4">💰 Finanzas</h2>
+                    <p class="text-gray-400">Control financiero y reportes</p>
+                </div>
+            </section>
+            
+            <section id="students" class="p-6 hidden">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-blue-400 mb-4">👥 Estudiantes</h2>
+                    <p class="text-gray-400">Gestión de participantes</p>
+                </div>
+            </section>
+            
+            <section id="settings" class="p-6 hidden">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-gray-400 mb-4">⚙️ Configuración</h2>
+                    <p class="text-gray-400">Ajustes del sistema</p>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-6 text-center border-t border-gray-600/30">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400">
+                © 2025 Eventoo Cognitive EDU - Dashboard Casa de Magia
+            </p>
+        </div>
+    </footer>
+
+    <script src="dashboard-travel.js"></script>
+</body>
+</html>

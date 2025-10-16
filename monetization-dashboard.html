@@ -104,159 +104,489 @@
         }
         
         .form-input:focus {
-            outline: none;
+            background: rgba(255, 255, 255, 0.15);
             border-color: #667eea;
+            outline: none;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Progress bars */
+        .progress-bar {
+            background: linear-gradient(90deg, #10b981, #34d399);
+            transition: width 0.5s ease;
+        }
+        
+        /* Status badges */
+        .status-active {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .status-completed {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .status-paused {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .status-cancelled {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        /* Challenge cards */
+        .challenge-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transition: all 0.3s ease;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        .challenge-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
         
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* Difficulty indicators */
+        .difficulty-easy {
+            background: linear-gradient(135deg, #10b981, #059669);
         }
         
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+        .difficulty-medium {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
         }
         
-        ::-webkit-scrollbar-thumb {
-            background: rgba(102, 126, 234, 0.5);
-            border-radius: 4px;
+        .difficulty-hard {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(102, 126, 234, 0.7);
+        .difficulty-expert {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                display: none;
-            }
-        }
-        
-        /* Loading animation */
-        .loading-spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Notification styles */
-        .notification {
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
+        /* Animations */
+        @keyframes slideInUp {
             from {
-                transform: translateX(100%);
+                transform: translateY(30px);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: translateY(0);
                 opacity: 1;
             }
+        }
+        
+        .slide-in-up {
+            animation: slideInUp 0.5s ease forwards;
+        }
+        
+        /* Genio animation */
+        @keyframes genioFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        
+        .genio-active {
+            animation: genioFloat 3s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
+    <!-- Dashboard Layout -->
     <div class="dashboard-grid">
+        
         <!-- Sidebar -->
-        <div class="sidebar">
+        <aside class="sidebar glass">
             <div class="p-6">
-                <div class="flex items-center space-x-3 mb-8">
-                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-lg">E</span>
-                    </div>
-                    <div>
-                        <h2 class="text-white font-semibold">Eventoo</h2>
-                        <p class="text-gray-400 text-sm">Casa de Magia</p>
-                    </div>
+                <div class="text-center mb-8">
+                    <div class="text-4xl mb-2">💰</div>
+                    <h2 class="text-xl font-bold">Monetización</h2>
+                    <p class="text-sm text-gray-400">Dashboard de Recaudación</p>
                 </div>
                 
                 <nav class="space-y-2">
                     <div class="nav-item active p-3 rounded-lg" data-section="overview">
-                        <div class="flex items-center space-x-3">
+                        <div class="flex items-center gap-3">
                             <span class="text-xl">📊</span>
-                            <span class="text-white">Overview</span>
+                            <span class="font-medium">Resumen</span>
                         </div>
                     </div>
                     
-                    <div class="nav-item p-3 rounded-lg" data-section="plans">
-                        <div class="flex items-center space-x-3">
+                    <div class="nav-item p-3 rounded-lg" data-section="create-plan">
+                        <div class="flex items-center gap-3">
                             <span class="text-xl">🎯</span>
-                            <span class="text-white">Planes</span>
+                            <span class="font-medium">Crear Plan</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item p-3 rounded-lg" data-section="active-plans">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🚀</span>
+                            <span class="font-medium">Planes Activos</span>
                         </div>
                     </div>
                     
                     <div class="nav-item p-3 rounded-lg" data-section="challenges">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-xl">🎮</span>
-                            <span class="text-white">Retos</span>
-                        </div>
-                    </div>
-                    
-                    <div class="nav-item p-3 rounded-lg" data-section="execution">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-xl">⚡</span>
-                            <span class="text-white">Ejecución</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🏆</span>
+                            <span class="font-medium">Retos</span>
                         </div>
                     </div>
                     
                     <div class="nav-item p-3 rounded-lg" data-section="analytics">
-                        <div class="flex items-center space-x-3">
+                        <div class="flex items-center gap-3">
                             <span class="text-xl">📈</span>
-                            <span class="text-white">Analytics</span>
+                            <span class="font-medium">Análisis</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item p-3 rounded-lg" data-section="settings">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">⚙️</span>
+                            <span class="font-medium">Configuración</span>
                         </div>
                     </div>
                 </nav>
-                
-                <div class="mt-8 p-4 glass rounded-lg">
-                    <h4 class="text-white font-semibold mb-2">💡 Tip del Día</h4>
-                    <p class="text-gray-300 text-sm">Los retos de dificultad media tienen el mejor balance entre esfuerzo y recaudación.</p>
-                </div>
             </div>
-        </div>
-        
-        <!-- Main Content -->
-        <div class="main-content">
-            <div id="mainContent">
-                <!-- Content will be dynamically loaded here -->
-                <div class="flex items-center justify-center h-screen">
-                    <div class="text-center">
-                        <div class="loading-spinner mx-auto mb-4"></div>
-                        <p class="text-gray-300">Cargando dashboard...</p>
+            
+            <!-- Quick Stats -->
+            <div class="p-6 border-t border-gray-600/30">
+                <h3 class="text-sm font-bold text-gray-400 mb-4">ESTADÍSTICAS RÁPIDAS</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-sm">Planes Activos:</span>
+                        <span class="font-bold text-blue-400">8</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-sm">Total Recaudado:</span>
+                        <span class="font-bold text-green-400">€45,670</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-sm">Tasa de Éxito:</span>
+                        <span class="font-bold text-yellow-400">94%</span>
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="p-6 border-b border-gray-600/30">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold">
+                            <span class="text-transparent bg-clip-text animated-gradient">Dashboard de Monetización</span>
+                        </h1>
+                        <p class="text-gray-400">Gestión integral de planes de recaudación gamificados</p>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="text-6xl genio-active">🧞</div>
+                        <div>
+                            <div class="text-sm text-gray-400">Asistente Mágico</div>
+                            <div class="text-xs text-green-400">El Genio está listo para ayudarte</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Overview Section -->
+            <section id="overview" class="p-6">
+                <!-- Stats Cards -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="card-hover glass rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-green-400">€45,670</div>
+                                <div class="text-gray-400">Total Recaudado</div>
+                            </div>
+                            <div class="text-4xl">💰</div>
+                        </div>
+                        <div class="text-sm text-green-400">+18% este mes</div>
+                    </div>
+                    
+                    <div class="card-hover glass rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-blue-400">8</div>
+                                <div class="text-gray-400">Planes Activos</div>
+                            </div>
+                            <div class="text-4xl">🎯</div>
+                        </div>
+                        <div class="text-sm text-blue-400">2 nuevos</div>
+                    </div>
+                    
+                    <div class="card-hover glass rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-purple-400">47</div>
+                                <div class="text-gray-400">Retos Completados</div>
+                            </div>
+                            <div class="text-4xl">🏆</div>
+                        </div>
+                        <div class="text-sm text-purple-400">+5 esta semana</div>
+                    </div>
+                    
+                    <div class="card-hover glass rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <div class="text-3xl font-bold text-yellow-400">94%</div>
+                                <div class="text-gray-400">Tasa de Éxito</div>
+                            </div>
+                            <div class="text-4xl">📈</div>
+                        </div>
+                        <div class="text-sm text-green-400">Excelente!</div>
+                    </div>
+                </div>
+                
+                <!-- Active Plans Preview -->
+                <div class="glass rounded-2xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-blue-400">Planes de Monetización Activos</h2>
+                        <button onclick="showSection('active-plans')" class="text-blue-400 hover:text-blue-300 text-sm font-medium">
+                            Ver todos →
+                        </button>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="activePlansPreview">
+                        <!-- Active plans will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="glass rounded-2xl p-6">
+                    <h2 class="text-2xl font-bold text-green-400 mb-6">Actividad Reciente</h2>
+                    
+                    <div class="space-y-4" id="recentActivity">
+                        <!-- Recent activity will be loaded here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Create Plan Section -->
+            <section id="create-plan" class="p-6 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-blue-400 mb-4">🎯 Crear Nuevo Plan de Monetización</h2>
+                    <p class="text-gray-400">El Genio Djink creará un plan personalizado basado en tu presupuesto y plazo</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8">
+                    <form id="createPlanForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Travel Details -->
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-blue-300 mb-4">📍 Detalles del Viaje</h3>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Nombre del Viaje</label>
+                                    <input type="text" id="travelName" class="form-input w-full px-4 py-3 rounded-lg" 
+                                           placeholder="Ej: Viaje Fin de Curso Barcelona" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Destino</label>
+                                    <input type="text" id="destination" class="form-input w-full px-4 py-3 rounded-lg" 
+                                           placeholder="Ej: Barcelona, España" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Fecha de Salida</label>
+                                    <input type="date" id="departureDate" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Número de Participantes</label>
+                                    <input type="number" id="numParticipants" class="form-input w-full px-4 py-3 rounded-lg" 
+                                           min="5" max="100" placeholder="25" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Budget Details -->
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-green-300 mb-4">💰 Presupuesto</h3>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Presupuesto Total (€)</label>
+                                    <input type="number" id="totalBudget" class="form-input w-full px-4 py-3 rounded-lg" 
+                                           min="500" step="100" placeholder="8500" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Monto Inicial (€)</label>
+                                    <input type="number" id="initialAmount" class="form-input w-full px-4 py-3 rounded-lg" 
+                                           min="0" step="50" placeholder="0">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Tipo de Viaje</label>
+                                    <select id="travelType" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="cultural">Cultural</option>
+                                        <option value="adventure">Aventura</option>
+                                        <option value="hybrid">Mixto</option>
+                                        <option value="relax">Relajación</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Nivel de Dificultad</label>
+                                    <select id="difficultyLevel" class="form-input w-full px-4 py-3 rounded-lg">
+                                        <option value="auto">Automático (Recomendado)</option>
+                                        <option value="easy">Fácil</option>
+                                        <option value="medium">Medio</option>
+                                        <option value="hard">Difícil</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Special Requirements -->
+                        <div class="mt-6">
+                            <h3 class="text-xl font-bold text-purple-300 mb-4">⭐ Requisitos Especiales</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Actividades Obligatorias</label>
+                                    <textarea id="mandatoryActivities" class="form-input w-full px-4 py-3 rounded-lg h-24" 
+                                              placeholder="Actividades que deben incluirse..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Notas Adicionales</label>
+                                    <textarea id="additionalNotes" class="form-input w-full px-4 py-3 rounded-lg h-24" 
+                                              placeholder="Cualquier información adicional..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="mt-8 text-center">
+                            <button type="submit" id="generatePlanBtn" 
+                                    class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
+                                <span id="generateText">🪄 Generar Plan de Monetización</span>
+                                <span id="generateLoading" class="hidden">
+                                    <span class="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2 animate-spin"></span>
+                                    El Genio está calculando...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Generated Plan Preview -->
+                <div id="planPreview" class="mt-8 hidden">
+                    <!-- Plan preview will be inserted here -->
+                </div>
+            </section>
+            
+            <!-- Active Plans Section -->
+            <section id="active-plans" class="p-6 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-purple-400 mb-4">🚀 Planes de Monetización Activos</h2>
+                    <p class="text-gray-400">Gestiona todos tus planes de recaudación en curso</p>
+                </div>
+                
+                <!-- Filter Controls -->
+                <div class="glass rounded-xl p-4 mb-6">
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Filtrar por Estado</label>
+                            <select id="statusFilter" class="form-input px-3 py-2 rounded-lg text-sm">
+                                <option value="all">Todos</option>
+                                <option value="active">Activos</option>
+                                <option value="completed">Completados</option>
+                                <option value="paused">Pausados</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Ordenar por</label>
+                            <select id="sortBy" class="form-input px-3 py-2 rounded-lg text-sm">
+                                <option value="date">Fecha</option>
+                                <option value="progress">Progreso</option>
+                                <option value="budget">Presupuesto</option>
+                            </select>
+                        </div>
+                        <div class="flex-1"></div>
+                        <div>
+                            <button onclick="exportAllPlans()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                📊 Exportar Todo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plans Grid -->
+                <div id="plansGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Plans will be loaded here -->
+                </div>
+            </section>
+            
+            <!-- Challenges Section -->
+            <section id="challenges" class="p-6 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-yellow-400 mb-4">🏆 Gestión de Retos</h2>
+                    <p class="text-gray-400">Administra todos los retos de tus planes de monetización</p>
+                </div>
+                
+                <!-- Challenges Grid -->
+                <div id="challengesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Challenges will be loaded here -->
+                </div>
+            </section>
+            
+            <!-- Analytics Section -->
+            <section id="analytics" class="p-6 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-green-400 mb-4">📈 Análisis y Reportes</h2>
+                    <p class="text-gray-400">Métricas detalladas del rendimiento de monetización</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-blue-400 mb-4">Rendimiento por Mes</h3>
+                        <div class="h-64 bg-white/5 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-400">Gráfico en desarrollo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-purple-400 mb-4">Tasa de Éxito por Tipo</h3>
+                        <div class="h-64 bg-white/5 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-400">Análisis en desarrollo</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Settings Section -->
+            <section id="settings" class="p-6 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-400 mb-4">⚙️ Configuración</h2>
+                    <p class="text-gray-400">Ajustes del sistema de monetización</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4">Preferencias del Sistema</h3>
+                    <p class="text-gray-400">Configuración en desarrollo...</p>
+                </div>
+            </section>
+            
+        </main>
     </div>
-    
-    <!-- Footer Scripts -->
+
+    <!-- Footer -->
+    <footer class="py-6 text-center border-t border-gray-600/30">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400">
+                © 2025 Eventoo Cognitive EDU - Sistema de Monetización Gamificada
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     <script src="monetization-planner.js"></script>
-    <script src="plan-executor.js"></script>
     <script src="monetization-dashboard.js"></script>
 </body>
 </html>

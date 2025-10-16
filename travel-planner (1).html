@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genio Djink Travel Planner - Casa de Magia</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Cards */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Travel form styles */
+        .travel-form {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+        
+        .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .form-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Proposal cards */
+        .proposal-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .proposal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            border-color: #667eea;
+        }
+        
+        /* Genio Djink animation */
+        @keyframes genioFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        
+        .genio-active {
+            animation: genioFloat 3s ease-in-out infinite;
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Progress bars */
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+        }
+        
+        /* Gamification elements */
+        .gamification-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="py-8 text-center">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="text-6xl genio-active">🧞</div>
+                <div>
+                    <h1 class="text-4xl font-bold">
+                        <span class="text-transparent bg-clip-text animated-gradient">Genio Djink</span>
+                    </h1>
+                    <p class="text-xl text-gray-400">Travel Planner Mágico</p>
+                </div>
+            </div>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+                🪄 "Permíteme organizar el viaje de fin de curso más épico de la historia... 
+                Cultura, aventura y magia se combinarán para crear recuerdos inolvidables!"
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="py-8">
+        <div class="container mx-auto px-4 max-w-7xl">
+            
+            <!-- Travel Planning Form -->
+            <section class="mb-12">
+                <div class="glass rounded-2xl p-8 border border-blue-400/30">
+                    <h2 class="text-3xl font-bold text-blue-400 mb-6 text-center">✈️ Planifica tu Viaje Mágico</h2>
+                    
+                    <form id="travelForm" class="travel-form rounded-xl p-6">
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Basic Info -->
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-blue-300 mb-4">📍 Información Básica</h3>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Destino Principal</label>
+                                    <input type="text" id="destination" class="form-input w-full px-4 py-3 rounded-lg" 
+                                           placeholder="¿A dónde quieres viajar?" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Fecha de Salida</label>
+                                    <input type="date" id="departureDate" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Número de Personas</label>
+                                    <select id="numPeople" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="10-15">10-15 personas</option>
+                                        <option value="16-25">16-25 personas</option>
+                                        <option value="26-40">26-40 personas</option>
+                                        <option value="41+">Más de 40 personas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Accommodation & Duration -->
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-blue-300 mb-4">🏨 Alojamiento</h3>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Número de Noches</label>
+                                    <select id="numNights" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="2-3">2-3 noches</option>
+                                        <option value="4-5">4-5 noches</option>
+                                        <option value="6-7">6-7 noches</option>
+                                        <option value="8+">Más de 8 noches</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Tipo de Hospedaje</label>
+                                    <select id="accommodationType" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="hotel-3">Hotel 3 estrellas</option>
+                                        <option value="hotel-4">Hotel 4 estrellas</option>
+                                        <option value="hostel">Hostel juvenil</option>
+                                        <option value="camping">Camping/Cámping</option>
+                                        <option value="resort">Resort vacacional</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Régimen de Comidas</label>
+                                    <select id="mealPlan" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="no-meals">Solo alojamiento</option>
+                                        <option value="breakfast">Desayuno incluido</option>
+                                        <option value="half-board">Media pensión</option>
+                                        <option value="full-board">Pensión completa</option>
+                                        <option value="all-inclusive">Todo incluido</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Budget & Preferences -->
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-blue-300 mb-4">💰 Presupuesto</h3>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Presupuesto por Persona</label>
+                                    <select id="budget" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="150-250">€150 - €250</option>
+                                        <option value="250-400">€250 - €400</option>
+                                        <option value="400-600">€400 - €600</option>
+                                        <option value="600+">Más de €600</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Tipo de Viaje Preferido</label>
+                                    <select id="travelType" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="cultural">Cultural Puro</option>
+                                        <option value="adventure">Aventura Extrema</option>
+                                        <option value="hybrid">Mixto (Cultura + Aventura)</option>
+                                        <option value="relax">Relajación y Ocio</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Transporte</label>
+                                    <select id="transport" class="form-input w-full px-4 py-3 rounded-lg" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="bus-autocar">Autocar privado</option>
+                                        <option value="train">Tren</option>
+                                        <option value="flight">Vuelo</option>
+                                        <option value="mixed">Combinado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Special Requirements -->
+                        <div class="mt-6">
+                            <h3 class="text-xl font-bold text-blue-300 mb-4">⭐ Requisitos Especiales</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Actividades Obligatorias</label>
+                                    <textarea id="mandatoryActivities" class="form-input w-full px-4 py-3 rounded-lg h-24" 
+                                              placeholder="Actividades que deben incluirse en el viaje..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Restricciones/Alérgenos</label>
+                                    <textarea id="restrictions" class="form-input w-full px-4 py-3 rounded-lg h-24" 
+                                              placeholder="Dietas especiales, alergias, limitaciones..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="mt-8 text-center">
+                            <button type="submit" id="searchButton" 
+                                    class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
+                                <span id="searchText">🪄 Buscar las 3 Mejores Opciones</span>
+                                <span id="searchLoading" class="hidden">
+                                    <span class="loading inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"></span>
+                                    El Genio está trabajando...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            
+            <!-- Travel Proposals -->
+            <section id="proposalsSection" class="mb-12 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-yellow-400 mb-4">🌟 Las 3 Mejores Propuestas del Genio</h2>
+                    <p class="text-gray-400">Cuidadosamente seleccionadas y ponderadas para ti</p>
+                </div>
+                
+                <div id="proposalsContainer" class="grid md:grid-cols-3 gap-8">
+                    <!-- Proposals will be inserted here -->
+                </div>
+            </section>
+            
+            <!-- Gamification Plan -->
+            <section id="gamificationSection" class="mb-12 hidden">
+                <div class="glass rounded-2xl p-8 border border-yellow-400/30">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-yellow-400 mb-4">🎮 Plan de Recaudación Mágica</h2>
+                        <p class="text-gray-400">Transformemos el financiamiento en una aventura épica</p>
+                    </div>
+                    
+                    <div id="gamificationPlan" class="space-y-6">
+                        <!-- Gamification plan will be inserted here -->
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400">
+                © 2025 Eventoo Cognitive EDU - El Genio Djink hace realidad tus deseos de viaje
+            </p>
+        </div>
+    </footer>
+
+    <script src="travel-planner.js"></script>
+</body>
+</html>

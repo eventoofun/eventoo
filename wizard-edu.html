@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wizard EDU - Casas Mágicas | Eventoo Cognitive</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Step animations */
+        .step-enter {
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        .step-exit {
+            animation: slideOutLeft 0.5s ease-in;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(-100%); opacity: 0; }
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        /* Magic button */
+        .btn-magic {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-magic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-magic:hover::before {
+            left: 100%;
+        }
+        
+        .btn-magic:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Form styles */
+        .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* House cards */
+        .house-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .house-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+        
+        .house-card.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Challenge cards */
+        .challenge-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .challenge-card.selected {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        /* Loading spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Success animation */
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .success-animation {
+            animation: successPulse 2s ease-in-out infinite;
+        }
+        
+        /* House specific colors */
+        .house-fire { border-color: #ef4444; }
+        .house-water { border-color: #3b82f6; }
+        .house-earth { border-color: #10b981; }
+        .house-air { border-color: #8b5cf6; }
+        .house-mystery { border-color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-2xl">🏰</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-glow">Eventoo</h1>
+                        <p class="text-xs text-gray-400">Cognitive EDU</p>
+                    </div>
+                </div>
+                
+                <!-- Progress -->
+                <div class="hidden md:flex items-center gap-4">
+                    <div class="text-sm text-gray-400">Paso</div>
+                    <div class="w-32 h-2 bg-gray-700 rounded-full overflow-hidden">
+                        <div id="progressBar" class="progress-bar h-full bg-gradient-to-r from-blue-600 to-cyan-600" style="width: 16.67%"></div>
+                    </div>
+                    <div class="text-sm text-gray-400"><span id="currentStep">1</span>/6</div>
+                </div>
+                
+                <!-- Exit -->
+                <button onclick="exitWizard()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 min-h-screen">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <!-- Step 1: Información de la Casa -->
+            <div id="step1" class="wizard-step">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-6">🏰</div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Crea tu
+                        <span class="text-transparent bg-clip-text animated-gradient">Casa Mágica</span>
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧙‍♂️ "Bienvenido al mundo de la magia educativa..."
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- School Info -->
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Nombre del Colegio/Instituto</label>
+                                <input type="text" id="schoolName" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="CEIP San Cristóbal">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Curso/Clase</label>
+                                <input type="text" id="className" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="6ºB Primaria">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Número de Alumnos</label>
+                                <input type="number" id="studentCount" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="25" min="5" max="50">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Tutor/a Principal</label>
+                                <input type="text" id="mainTeacher" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="Pedro Martínez García">
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Info -->
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Email del Tutor/a</label>
+                                <input type="email" id="teacherEmail" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="pedro.martinez@colegio.es">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Teléfono de Contacto</label>
+                                <input type="tel" id="contactPhone" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="+34 600 123 456">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">AMPA Contacto (Opcional)</label>
+                                <input type="text" id="ampContact" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="Ana López - Presidenta AMPA">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Objetivo de Financiación</label>
+                                <input type="number" id="fundingGoal" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="€3,000" min="100" max="10000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Nombre de la Casa -->
+            <div id="step2" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Nombra tu
+                        <span class="text-transparent bg-clip-text animated-gradient">Casa</span>
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧙‍♂️ "El nombre define el poder de la casa..."
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <!-- House Name Options -->
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="house-card glass rounded-2xl p-6 border border-gray-600" onclick="selectHouseOption('fire')">
+                            <div class="text-4xl mb-4 text-center">🔥</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-red-400">Casa del Fuego</h3>
+                            <p class="text-gray-400 text-center text-sm">Valentía, pasión y liderazgo</p>
+                        </div>
+                        
+                        <div class="house-card glass rounded-2xl p-6 border border-gray-600" onclick="selectHouseOption('water')">
+                            <div class="text-4xl mb-4 text-center">💧</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-blue-400">Casa del Agua</h3>
+                            <p class="text-gray-400 text-center text-sm">Sabiduría, adaptabilidad y fluidez</p>
+                        </div>
+                        
+                        <div class="house-card glass rounded-2xl p-6 border border-gray-600" onclick="selectHouseOption('earth')">
+                            <div class="text-4xl mb-4 text-center">🌍</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-green-400">Casa de la Tierra</h3>
+                            <p class="text-gray-400 text-center text-sm">Resistencia, crecimiento y estabilidad</p>
+                        </div>
+                        
+                        <div class="house-card glass rounded-2xl p-6 border border-gray-600" onclick="selectHouseOption('air')">
+                            <div class="text-4xl mb-4 text-center">💨</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-purple-400">Casa del Aire</h3>
+                            <p class="text-gray-400 text-center text-sm">Creatividad, libertad y agilidad</p>
+                        </div>
+                        
+                        <div class="house-card glass rounded-2xl p-6 border border-gray-600" onclick="selectHouseOption('mystery')">
+                            <div class="text-4xl mb-4 text-center">✨</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-yellow-400">Casa del Misterio</h3>
+                            <p class="text-gray-400 text-center text-sm">Magia, curiosidad y descubrimiento</p>
+                        </div>
+                        
+                        <div class="house-card glass rounded-2xl p-6 border border-gray-600" onclick="selectHouseOption('custom')">
+                            <div class="text-4xl mb-4 text-center">🎨</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-gray-400">Personalizado</h3>
+                            <p class="text-gray-400 text-center text-sm">Crea tu propio nombre mágico</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Custom Name Input -->
+                    <div id="customNameSection" class="hidden max-w-2xl mx-auto">
+                        <div class="glass rounded-2xl p-6 border border-yellow-400/30">
+                            <h3 class="text-xl font-bold text-center mb-4 text-yellow-400">Nombre Personalizado</h3>
+                            <input type="text" id="customHouseName" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400 mb-4" placeholder="Casa de los Valientes Corazones">
+                            <textarea id="customHouseDescription" rows="3" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="Describe los valores y características de tu casa..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Retos Fundacionales -->
+            <div id="step3" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Retos
+                        <span class="text-transparent bg-clip-text animated-gradient">Fundacionales</span>
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧙‍♂️ "Cada reto completado fortalece la casa..."
+                    </p>
+                </div>
+                
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8 mb-8">
+                        <!-- Name Challenge -->
+                        <div class="glass rounded-2xl p-6 border border-blue-400/30">
+                            <h3 class="text-2xl font-bold text-blue-300 mb-4">🏆 Reto: Nombre Definitivo</h3>
+                            <p class="text-gray-400 mb-6">Los alumnos votarán el nombre final de la casa. El ganador decide el diseño de la heráldica.</p>
+                            
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-gray-300">Opciones de Nombre (mínimo 3)</label>
+                                <div id="nameOptions">
+                                    <input type="text" class="form-input w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 mb-2" placeholder="Opción 1">
+                                    <input type="text" class="form-input w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 mb-2" placeholder="Opción 2">
+                                    <input type="text" class="form-input w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 mb-2" placeholder="Opción 3">
+                                </div>
+                                <button onclick="addNameOption()" class="text-blue-400 hover:text-blue-300 text-sm">+ Añadir opción</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Heraldry Challenge -->
+                        <div class="glass rounded-2xl p-6 border border-green-400/30">
+                            <h3 class="text-2xl font-bold text-green-300 mb-4">🎨 Reto: Heráldica</h3>
+                            <p class="text-gray-400 mb-6">Los alumnos diseñan el escudo de la casa. El mejor diseño se convierte en producto coleccionable.</p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Elementos del Escudo</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-green-500" checked>
+                                            <span class="text-sm">Animal mágico</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-green-500" checked>
+                                            <span class="text-sm">Símbolo de poder</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-green-500">
+                                            <span class="text-sm">Elemento natural</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-green-500">
+                                            <span class="text-sm">Lema de la casa</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Colores Principales</label>
+                                    <div class="flex gap-2">
+                                        <input type="color" value="#3b82f6" class="w-12 h-8 rounded border border-gray-600">
+                                        <input type="color" value="#ffffff" class="w-12 h-8 rounded border border-gray-600">
+                                        <input type="color" value="#f59e0b" class="w-12 h-8 rounded border border-gray-600">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Paquetes de Retos -->
+            <div id="step4" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Paquetes de
+                        <span class="text-transparent bg-clip-text animated-gradient">Retos</span>
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧙‍♂️ "Cada reto completado desbloquea magia..."
+                    </p>
+                </div>
+                
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Ecology Package -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-green-400/30" onclick="togglePackage('ecology')">
+                            <div class="text-4xl mb-4 text-center">🌱</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-green-400">Ecología</h3>
+                            <p class="text-gray-400 text-center text-sm mb-4">Retos para cuidar el planeta</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">•</span>
+                                    <span>Recoger 100 botellas de plástico</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">•</span>
+                                    <span>Plantar 50 árboles</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">•</span>
+                                    <span>Semana sin plástico</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">•</span>
+                                    <span>Crear compost escolar</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <span class="text-2xl font-bold text-green-400">€150</span>
+                                <p class="text-xs text-gray-400">al completar</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Solidarity Package -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-blue-400/30" onclick="togglePackage('solidarity')">
+                            <div class="text-4xl mb-4 text-center">🤝</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-blue-400">Solidaridad</h3>
+                            <p class="text-gray-400 text-center text-sm mb-4">Ayudar a la comunidad</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-blue-400">•</span>
+                                    <span>Visitar residencia de ancianos</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-blue-400">•</span>
+                                    <span>Recogida de alimentos</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-blue-400">•</span>
+                                    <span>Voluntariado local</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-blue-400">•</span>
+                                    <span>Campaña de donación</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <span class="text-2xl font-bold text-blue-400">€200</span>
+                                <p class="text-xs text-gray-400">al completar</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Culture Package -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-purple-400/30" onclick="togglePackage('culture')">
+                            <div class="text-4xl mb-4 text-center">🎭</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-purple-400">Cultura</h3>
+                            <p class="text-gray-400 text-center text-sm mb-4">Explorar el arte y la historia</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-purple-400">•</span>
+                                    <span>Visitar museo local</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-purple-400">•</span>
+                                    <span>Obra de teatro escolar</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-purple-400">•</span>
+                                    <span>Proyecto de historia</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-purple-400">•</span>
+                                    <span>Exposición de arte</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <span class="text-2xl font-bold text-purple-400">€180</span>
+                                <p class="text-xs text-gray-400">al completar</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sports Package -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-orange-400/30" onclick="togglePackage('sports')">
+                            <div class="text-4xl mb-4 text-center">⚽</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-orange-400">Deportes</h3>
+                            <p class="text-gray-400 text-center text-sm mb-4">Actividad física y equipo</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-orange-400">•</span>
+                                    <span>Maratón solidaria</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-orange-400">•</span>
+                                    <span>Torneo inter-clases</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-orange-400">•</span>
+                                    <span>Reto de ejercicio diario</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-orange-400">•</span>
+                                    <span>Deporte inclusivo</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <span class="text-2xl font-bold text-orange-400">€120</span>
+                                <p class="text-xs text-gray-400">al completar</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Science Package -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-cyan-400/30" onclick="togglePackage('science')">
+                            <div class="text-4xl mb-4 text-center">🔬</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-cyan-400">Ciencia</h3>
+                            <p class="text-gray-400 text-center text-sm mb-4">Experimentos y descubrimientos</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-cyan-400">•</span>
+                                    <span>Feria de ciencia</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-cyan-400">•</span>
+                                    <span>Experimento del mes</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-cyan-400">•</span>
+                                    <span>Robot educativo</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-cyan-400">•</span>
+                                    <span>Observación astronómica</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <span class="text-2xl font-bold text-cyan-400">€220</span>
+                                <p class="text-xs text-gray-400">al completar</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Innovation Package -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-pink-400/30" onclick="togglePackage('innovation')">
+                            <div class="text-4xl mb-4 text-center">💡</div>
+                            <h3 class="text-xl font-bold text-center mb-3 text-pink-400">Innovación</h3>
+                            <p class="text-gray-400 text-center text-sm mb-4">Creatividad y emprendimiento</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-pink-400">•</span>
+                                    <span>Hackathon escolar</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-pink-400">•</span>
+                                    <span>Proyecto emprendedor</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-pink-400">•</span>
+                                    <span>App para el colegio</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-pink-400">•</span>
+                                    <span>Solución a un problema local</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <span class="text-2xl font-bold text-pink-400">€300</span>
+                                <p class="text-xs text-gray-400">al completar</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Selected Packages Summary -->
+                    <div id="selectedPackages" class="mt-8 hidden">
+                        <div class="glass rounded-2xl p-6 border border-yellow-400/30">
+                            <h3 class="text-xl font-bold text-yellow-400 mb-4">📦 Paquetes Seleccionados</h3>
+                            <div id="packagesList" class="space-y-2"></div>
+                            <div class="mt-4 pt-4 border-t border-gray-600">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold">Total Potencial:</span>
+                                    <span id="totalPotential" class="text-2xl font-bold text-green-400">€0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 5: Configuración de Monetización -->
+            <div id="step5" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        <span class="text-transparent bg-clip-text animated-gradient">Finanzas</span>
+                        Mágicas
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧙‍♂️ "El dinero es energía que fluye cuando haces magia..."
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- AMPA Configuration -->
+                        <div class="glass rounded-2xl p-6 border border-blue-400/30">
+                            <h3 class="text-2xl font-bold text-blue-300 mb-6">🏛️ Configuración AMPA</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Comisión para AMPA</label>
+                                    <select id="ampaCommission" class="form-input w-full px-4 py-3 rounded-xl text-white">
+                                        <option value="10">10% (Recomendado)</option>
+                                        <option value="15">15%</option>
+                                        <option value="20">20%</option>
+                                        <option value="25">25%</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Gestión de Patrocinios</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-blue-500" checked>
+                                            <span class="text-sm">AMPA gestiona patrocinadores</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-blue-500" checked>
+                                            <span class="text-sm">Panel de control para AMPA</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-blue-500">
+                                            <span class="text-sm">Notificaciones automáticas</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Cuenta Bancaria AMPA</label>
+                                    <input type="text" id="ampaAccount" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="ES12 1234 5678 9012 3456 7890">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Collections Configuration -->
+                        <div class="glass rounded-2xl p-6 border border-purple-400/30">
+                            <h3 class="text-2xl font-bold text-purple-300 mb-6">🛍️ Colecciones</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Precio Base por Colección</label>
+                                    <input type="number" id="collectionPrice" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" value="15" min="5" max="50">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Edición Limitada</label>
+                                    <select id="limitedEdition" class="form-input w-full px-4 py-3 rounded-xl text-white">
+                                        <option value="none">Sin límite</option>
+                                        <option value="100">100 unidades</option>
+                                        <option value="250">250 unidades</option>
+                                        <option value="500">500 unidades</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Productos Especiales</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-purple-500" checked>
+                                            <span class="text-sm">Camisetas de la casa</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-purple-500" checked>
+                                            <span class="text-sm">Tazas mágicas</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-purple-500">
+                                            <span class="text-sm">Libro de la casa</span>
+                                        </label>
+                                        <label class="flex items-center gap-2">
+                                            <input type="checkbox" class="text-purple-500">
+                                            <span class="text-sm">Medalla de heráldica</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Projection -->
+                    <div class="mt-8 glass rounded-2xl p-6 border border-yellow-400/30">
+                        <h3 class="text-2xl font-bold text-yellow-400 mb-4">📊 Proyección Financiera</h3>
+                        
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-green-400 mb-2" id="projectedCollections">€2,250</div>
+                                <div class="text-sm text-gray-400">Colecciones (150 alumnos × €15)</div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-400 mb-2" id="projectedChallenges">€1,170</div>
+                                <div class="text-sm text-gray-400">Retos Completados</div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-purple-400 mb-2" id="projectedTotal">€3,420</div>
+                                <div class="text-sm text-gray-400">Total Proyectado</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 pt-6 border-t border-gray-600">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-300">Objetivo del Viaje:</span>
+                                <span class="font-bold text-yellow-400" id="fundingGoalDisplay">€3,000</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-300">Comisión AMPA (10%):</span>
+                                <span class="font-bold text-blue-400" id="ampaFee">€342</span>
+                            </div>
+                            <div class="flex justify-between items-center text-lg">
+                                <span class="font-semibold text-white">Para el Viaje:</span>
+                                <span class="font-bold text-green-400 text-xl" id="netAmount">€3,078</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 6: Vista Previa y Lanzamiento -->
+            <div id="step6" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        <span class="text-transparent bg-clip-text animated-gradient">¡Todo</span>
+                        Listo!
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧙‍♂️ "Tu casa mágica está a punto de despertar..."
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <!-- House Preview -->
+                    <div class="glass rounded-3xl p-8 border border-yellow-400/30 mb-8">
+                        <div class="text-center mb-8">
+                            <div id="previewHouseEmblem" class="w-32 h-32 mx-auto bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full mb-4 flex items-center justify-center text-4xl">
+                                🏰
+                            </div>
+                            <h3 id="previewHouseName" class="text-3xl font-bold text-yellow-400 mb-2">Casa Mágica</h3>
+                            <p id="previewSchool" class="text-gray-400">CEIP San Cristóbal - 6ºB</p>
+                            <p id="previewStudents" class="text-gray-400">25 alumnos</p>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-6 mb-8">
+                            <div class="text-center">
+                                <div class="text-3xl mb-2">🎯</div>
+                                <div class="text-2xl font-bold text-blue-400" id="previewPackages">5</div>
+                                <div class="text-sm text-gray-400">Paquetes de Retos</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl mb-2">💰</div>
+                                <div class="text-2xl font-bold text-green-400" id="previewPotential">€3,420</div>
+                                <div class="text-sm text-gray-400">Potencial Total</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl mb-2">🚀</div>
+                                <div class="text-2xl font-bold text-purple-400" id="previewTimeline">Inmediato</div>
+                                <div class="text-sm text-gray-400">Inicio</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-gray-300 mb-6" id="previewDescription">
+                                Una casa mágica donde los alumnos aprenden que ganar las cosas cuesta esfuerzo, 
+                                pero lo hacen haciendo cosas ÉPICAS por la comunidad.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- What You'll Get -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="glass rounded-2xl p-6 border border-blue-400/30">
+                            <h4 class="text-xl font-bold text-blue-300 mb-4">✨ Para los Alumnos:</h4>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">🏆</span>
+                                    <span>Sistema de puntos y niveles</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">🎮</span>
+                                    <span>Retos gamificados</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">🏅</span>
+                                    <span>Colecciones desbloqueables</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">📱</span>
+                                    <span>App móvil para participar</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">🎓</span>
+                                    <span>Certificado de participación</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6 border border-purple-400/30">
+                            <h4 class="text-xl font-bold text-purple-300 mb-4">📊 Para el Centro:</h4>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">📈</span>
+                                    <span>Dashboard en tiempo real</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">💰</span>
+                                    <span>Control total de finanzas</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">🤝</span>
+                                    <span>Gestión de patrocinadores</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">📊</span>
+                                    <span>Analytics y reportes</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">🔒</span>
+                                    <span>Seguridad y privacidad</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Step -->
+            <div id="successStep" class="wizard-step hidden">
+                <div class="text-center">
+                    <div class="text-8xl mb-8 success-animation">🎉</div>
+                    <h2 class="text-5xl font-bold mb-6 text-transparent bg-clip-text animated-gradient">
+                        ¡Casa Mágica Creada!
+                    </h2>
+                    <p class="text-2xl text-gray-300 mb-8">
+                        🧙‍♂️ "Tu casa ya está viva y esperando a sus magos..."
+                    </p>
+                    
+                    <div class="glass rounded-3xl p-8 border border-yellow-400/30 max-w-2xl mx-auto mb-8">
+                        <h3 class="text-2xl font-bold text-yellow-400 mb-4">¿Qué pasa ahora?</h3>
+                        <div class="space-y-4 text-left">
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                                <span class="text-gray-300">Invitación enviada al tutor/a</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                                <span class="text-gray-300">Dashboard mágico activado</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                                <span class="text-gray-300">Retos disponibles para los alumnos</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                                <span class="text-gray-300">¡Empezar la magia educativa!</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="createAnotherHouse()" class="btn-magic px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full text-xl font-bold">
+                            🏰 Crear Otra Casa
+                        </button>
+                        <button onclick="goToDashboard()" class="btn-magic px-8 py-4 glass border-2 border-yellow-400 rounded-full text-xl font-bold">
+                            📊 Ir al Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Navigation Buttons -->
+    <div class="fixed bottom-0 left-0 right-0 glass border-t border-white/10 p-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <button id="prevBtn" onclick="previousStep()" class="btn-magic px-6 py-3 glass border border-gray-600 rounded-full font-bold hover:border-gray-400 transition-all hidden">
+                ← Anterior
+            </button>
+            
+            <div class="flex-1"></div>
+            
+            <button id="nextBtn" onclick="nextStep()" class="btn-magic px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full font-bold">
+                Siguiente →
+            </button>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center">
+        <div class="text-center">
+            <div class="text-8xl mb-6">🏰</div>
+            <h3 class="text-3xl font-bold text-yellow-400 mb-4">Creando Casa Mágica...</h3>
+            <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 border-4 border-yellow-400/30 border-t-yellow-400 rounded-full spinner"></div>
+            </div>
+            <p class="text-gray-400" id="loadingText">Preparando la magia educativa...</p>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+        // Wizard State
+        let currentStepIndex = 1;
+        let wizardData = {
+            schoolName: '',
+            className: '',
+            studentCount: 0,
+            mainTeacher: '',
+            teacherEmail: '',
+            contactPhone: '',
+            ampContact: '',
+            fundingGoal: 0,
+            houseType: '',
+            houseName: '',
+            houseDescription: '',
+            nameOptions: [],
+            heraldryElements: [],
+            selectedPackages: [],
+            ampaCommission: 10,
+            collectionPrice: 15,
+            limitedEdition: 'none'
+        };
+        
+        // Step Management
+        function showStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.wizard-step').forEach(step => {
+                step.classList.add('hidden');
+            });
+            
+            // Show current step
+            const currentStep = document.getElementById(`step${stepNumber}`);
+            if (currentStep) {
+                currentStep.classList.remove('hidden');
+                currentStep.classList.add('step-enter');
+            }
+            
+            // Update progress
+            const progress = (stepNumber / 6) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('currentStep').textContent = stepNumber;
+            
+            // Update navigation
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (stepNumber === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (stepNumber === 6) {
+                nextBtn.textContent = '🏰 Crear Casa';
+            } else {
+                nextBtn.textContent = 'Siguiente →';
+            }
+        }
+        
+        function nextStep() {
+            if (currentStepIndex === 6) {
+                createHouse();
+                return;
+            }
+            
+            if (validateCurrentStep()) {
+                currentStepIndex++;
+                showStep(currentStepIndex);
+            }
+        }
+        
+        function previousStep() {
+            if (currentStepIndex > 1) {
+                currentStepIndex--;
+                showStep(currentStepIndex);
+            }
+        }
+        
+        function validateCurrentStep() {
+            switch (currentStepIndex) {
+                case 1:
+                    wizardData.schoolName = document.getElementById('schoolName').value;
+                    wizardData.className = document.getElementById('className').value;
+                    wizardData.studentCount = parseInt(document.getElementById('studentCount').value);
+                    wizardData.mainTeacher = document.getElementById('mainTeacher').value;
+                    wizardData.teacherEmail = document.getElementById('teacherEmail').value;
+                    wizardData.contactPhone = document.getElementById('contactPhone').value;
+                    wizardData.fundingGoal = parseInt(document.getElementById('fundingGoal').value);
+                    
+                    if (!wizardData.schoolName || !wizardData.className || !wizardData.studentCount || !wizardData.mainTeacher || !wizardData.teacherEmail || !wizardData.fundingGoal) {
+                        alert('🧙‍♂️ "Por favor completa todos los campos obligatorios"');
+                        return false;
+                    }
+                    break;
+                    
+                case 2:
+                    if (!wizardData.houseType) {
+                        alert('🧙‍♂️ "Debes seleccionar un tipo de casa"');
+                        return false;
+                    }
+                    if (wizardData.houseType === 'custom' && !document.getElementById('customHouseName').value) {
+                        alert('🧙‍♂️ "Debes proporcionar un nombre personalizado"');
+                        return false;
+                    }
+                    break;
+                    
+                case 3:
+                    // Collect name options
+                    const nameInputs = document.querySelectorAll('#nameOptions input');
+                    wizardData.nameOptions = Array.from(nameInputs).map(input => input.value).filter(val => val);
+                    
+                    if (wizardData.nameOptions.length < 3) {
+                        alert('🧙‍♂️ "Necesitas al menos 3 opciones de nombre"');
+                        return false;
+                    }
+                    break;
+                    
+                case 4:
+                    if (wizardData.selectedPackages.length === 0) {
+                        alert('🧙‍♂️ "Selecciona al menos un paquete de retos"');
+                        return false;
+                    }
+                    break;
+                    
+                case 5:
+                    wizardData.ampaCommission = parseInt(document.getElementById('ampaCommission').value);
+                    wizardData.collectionPrice = parseInt(document.getElementById('collectionPrice').value);
+                    wizardData.limitedEdition = document.getElementById('limitedEdition').value;
+                    updateFinancialProjection();
+                    break;
+                    
+                case 6:
+                    updatePreview();
+                    break;
+            }
+            return true;
+        }
+        
+        // House Selection
+        function selectHouseOption(type) {
+            wizardData.houseType = type;
+            
+            // Visual feedback
+            document.querySelectorAll('.house-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            event.target.closest('.house-card').classList.add('selected');
+            
+            // Show/hide custom name section
+            const customSection = document.getElementById('customNameSection');
+            if (type === 'custom') {
+                customSection.classList.remove('hidden');
+            } else {
+                customSection.classList.add('hidden');
+                
+                // Set predefined house name
+                const houseNames = {
+                    fire: 'Casa del Fuego',
+                    water: 'Casa del Agua',
+                    earth: 'Casa de la Tierra',
+                    air: 'Casa del Aire',
+                    mystery: 'Casa del Misterio'
+                };
+                
+                wizardData.houseName = houseNames[type];
+                wizardData.houseDescription = getHouseDescription(type);
+            }
+        }
+        
+        function getHouseDescription(type) {
+            const descriptions = {
+                fire: 'Valentía, pasión y liderazgo. Los miembros de esta casa son valientes y protectores.',
+                water: 'Sabiduría, adaptabilidad y fluidez. Adaptables y sabios como el agua.',
+                earth: 'Resistencia, crecimiento y estabilidad. Fuertes y confiables como la tierra.',
+                air: 'Creatividad, libertad y agilidad. Libres e innovadores como el viento.',
+                mystery: 'Magia, curiosidad y descubrimiento. Misteriosos y curiosos por naturaleza.'
+            };
+            return descriptions[type] || '';
+        }
+        
+        // Name Options
+        function addNameOption() {
+            const container = document.getElementById('nameOptions');
+            const inputCount = container.querySelectorAll('input').length;
+            
+            if (inputCount >= 6) {
+                alert('🧙‍♂️ "Máximo 6 opciones de nombre"');
+                return;
+            }
+            
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.className = 'form-input w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 mb-2';
+            newInput.placeholder = `Opción ${inputCount + 1}`;
+            
+            container.appendChild(newInput);
+        }
+        
+        // Package Management
+        function togglePackage(packageType) {
+            const packageCard = event.target.closest('.challenge-card');
+            
+            if (packageCard.classList.contains('selected')) {
+                packageCard.classList.remove('selected');
+                wizardData.selectedPackages = wizardData.selectedPackages.filter(p => p !== packageType);
+            } else {
+                packageCard.classList.add('selected');
+                wizardData.selectedPackages.push(packageType);
+            }
+            
+            updateSelectedPackages();
+        }
+        
+        function updateSelectedPackages() {
+            const selectedDiv = document.getElementById('selectedPackages');
+            const packagesList = document.getElementById('packagesList');
+            
+            if (wizardData.selectedPackages.length === 0) {
+                selectedDiv.classList.add('hidden');
+                return;
+            }
+            
+            selectedDiv.classList.remove('hidden');
+            
+            const packageNames = {
+                ecology: 'Ecología - €150',
+                solidarity: 'Solidaridad - €200',
+                culture: 'Cultura - €180',
+                sports: 'Deportes - €120',
+                science: 'Ciencia - €220',
+                innovation: 'Innovación - €300'
+            };
+            
+            const packageValues = {
+                ecology: 150,
+                solidarity: 200,
+                culture: 180,
+                sports: 120,
+                science: 220,
+                innovation: 300
+            };
+            
+            packagesList.innerHTML = wizardData.selectedPackages.map(pkg => 
+                `<div class="flex justify-between items-center">
+                    <span>${packageNames[pkg]}</span>
+                    <span class="font-bold text-green-400">€${packageValues[pkg]}</span>
+                </div>`
+            ).join('');
+            
+            const total = wizardData.selectedPackages.reduce((sum, pkg) => sum + packageValues[pkg], 0);
+            document.getElementById('totalPotential').textContent = `€${total}`;
+        }
+        
+        // Financial Projection
+        function updateFinancialProjection() {
+            const students = wizardData.studentCount || 25;
+            const collectionPrice = wizardData.collectionPrice || 15;
+            const collectionsTotal = students * collectionPrice;
+            
+            const packageValues = {
+                ecology: 150,
+                solidarity: 200,
+                culture: 180,
+                sports: 120,
+                science: 220,
+                innovation: 300
+            };
+            
+            const challengesTotal = wizardData.selectedPackages.reduce((sum, pkg) => sum + packageValues[pkg], 0);
+            const total = collectionsTotal + challengesTotal;
+            const ampaFee = Math.round(total * (wizardData.ampaCommission / 100));
+            const netAmount = total - ampaFee;
+            
+            document.getElementById('projectedCollections').textContent = `€${collectionsTotal}`;
+            document.getElementById('projectedChallenges').textContent = `€${challengesTotal}`;
+            document.getElementById('projectedTotal').textContent = `€${total}`;
+            document.getElementById('ampaFee').textContent = `€${ampaFee}`;
+            document.getElementById('netAmount').textContent = `€${netAmount}`;
+        }
+        
+        // Preview Update
+        function updatePreview() {
+            document.getElementById('previewHouseName').textContent = wizardData.houseName;
+            document.getElementById('previewSchool').textContent = `${wizardData.schoolName} - ${wizardData.className}`;
+            document.getElementById('previewStudents').textContent = `${wizardData.studentCount} alumnos`;
+            document.getElementById('previewPackages').textContent = wizardData.selectedPackages.length;
+            
+            const packageValues = {
+                ecology: 150,
+                solidarity: 200,
+                culture: 180,
+                sports: 120,
+                science: 220,
+                innovation: 300
+            };
+            
+            const challengesTotal = wizardData.selectedPackages.reduce((sum, pkg) => sum + packageValues[pkg], 0);
+            const collectionsTotal = wizardData.studentCount * wizardData.collectionPrice;
+            const total = challengesTotal + collectionsTotal;
+            
+            document.getElementById('previewPotential').textContent = `€${total}`;
+        }
+        
+        // House Creation
+        function createHouse() {
+            showLoading('Creando tu casa mágica...');
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Save to localStorage for demo
+                localStorage.setItem('houseData', JSON.stringify(wizardData));
+                
+                hideLoading();
+                showSuccess();
+            }, 4000);
+        }
+        
+        // Loading and Success
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+        
+        function showSuccess() {
+            document.querySelectorAll('.wizard-step').forEach(step => {
+                step.classList.add('hidden');
+            });
+            document.getElementById('successStep').classList.remove('hidden');
+        }
+        
+        // Navigation Functions
+        function exitWizard() {
+            if (confirm('🧙‍♂️ "¿Seguro que quieres salir? Perderás el progreso"')) {
+                window.location.href = '/';
+            }
+        }
+        
+        function createAnotherHouse() {
+            // Reset wizard
+            currentStepIndex = 1;
+            wizardData = {
+                schoolName: '',
+                className: '',
+                studentCount: 0,
+                mainTeacher: '',
+                teacherEmail: '',
+                contactPhone: '',
+                ampContact: '',
+                fundingGoal: 0,
+                houseType: '',
+                houseName: '',
+                houseDescription: '',
+                nameOptions: [],
+                heraldryElements: [],
+                selectedPackages: [],
+                ampaCommission: 10,
+                collectionPrice: 15,
+                limitedEdition: 'none'
+            };
+            
+            showStep(1);
+        }
+        
+        function goToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(1);
+            
+            // Add event listeners for real-time updates
+            document.getElementById('studentCount').addEventListener('input', updateFinancialProjection);
+            document.getElementById('collectionPrice').addEventListener('input', updateFinancialProjection);
+            document.getElementById('ampaCommission').addEventListener('change', updateFinancialProjection);
+            
+            // Custom house name handling
+            document.getElementById('customHouseName').addEventListener('input', (e) => {
+                wizardData.houseName = e.target.value;
+            });
+            
+            document.getElementById('customHouseDescription').addEventListener('input', (e) => {
+                wizardData.houseDescription = e.target.value;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Mágico - Casa de Magia | Eventoo Cognitive</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        
+        /* Cards */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Progress bars */
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        /* Magic button */
+        .btn-magic {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-magic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-magic:hover::before {
+            left: 100%;
+        }
+        
+        .btn-magic:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Status badges */
+        .status-active { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .status-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .status-completed { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        
+        /* Challenge cards */
+        .challenge-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .challenge-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        /* Student cards */
+        .student-card {
+            transition: all 0.3s ease;
+        }
+        
+        .student-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        /* Modal */
+        .modal {
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Notifications */
+        .notification {
+            animation: slideInRight 0.3s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo and Menu Toggle -->
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()" class="md:hidden text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                            <span class="text-xl">🏰</span>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold">Casa Mágica</h1>
+                            <p class="text-xs text-gray-400">6ºB - CEIP San Cristóbal</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                            <span class="text-sm">👨‍🏫</span>
+                        </div>
+                        <div class="text-sm">
+                            <div class="font-semibold">Pedro Martínez</div>
+                            <div class="text-gray-400">Tutor</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button onclick="toggleNotifications()" class="relative p-2 text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Settings -->
+                    <button onclick="openSettings()" class="p-2 text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed left-0 top-0 w-64 h-full bg-gradient-to-b from-slate-900 to-indigo-900 z-40 p-6 shadow-2xl md:translate-x-0">
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                    <span class="text-2xl">🏰</span>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-glow">Casa Mágica</h2>
+                    <p class="text-xs text-gray-400">Dashboard EDU</p>
+                </div>
+            </div>
+            
+            <div class="glass rounded-xl p-4 mb-6">
+                <div class="text-center">
+                    <div class="text-3xl mb-2">🔥</div>
+                    <h3 class="font-bold text-red-400">Casa del Fuego</h3>
+                    <p class="text-xs text-gray-400">6ºB - 25 alumnos</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="space-y-2">
+            <a href="#" onclick="showSection('overview')" class="dashboard-nav-item active flex items-center gap-3 p-3 rounded-xl glass hover:bg-white/10 transition-all">
+                <span class="text-xl">📊</span>
+                <span class="font-semibold">Resumen</span>
+            </a>
+            
+            <a href="#" onclick="showSection('challenges')" class="dashboard-nav-item flex items-center gap-3 p-3 rounded-xl glass hover:bg-white/10 transition-all">
+                <span class="text-xl">🎯</span>
+                <span class="font-semibold">Retos</span>
+                <span class="ml-auto bg-red-500 text-xs px-2 py-1 rounded-full">5</span>
+            </a>
+            
+            <a href="#" onclick="showSection('students')" class="dashboard-nav-item flex items-center gap-3 p-3 rounded-xl glass hover:bg-white/10 transition-all">
+                <span class="text-xl">👨‍👩‍👧‍👦</span>
+                <span class="font-semibold">Alumnos</span>
+            </a>
+            
+            <a href="#" onclick="showSection('finance')" class="dashboard-nav-item flex items-center gap-3 p-3 rounded-xl glass hover:bg-white/10 transition-all">
+                <span class="text-xl">💰</span>
+                <span class="font-semibold">Finanzas</span>
+                <span class="ml-auto bg-green-500 text-xs px-2 py-1 rounded-full">€2,850</span>
+            </a>
+            
+            <a href="#" onclick="showSection('collections')" class="dashboard-nav-item flex items-center gap-3 p-3 rounded-xl glass hover:bg-white/10 transition-all">
+                <span class="text-xl">🛍️</span>
+                <span class="font-semibold">Colecciones</span>
+            </a>
+            
+            <a href="#" onclick="showSection('settings')" class="dashboard-nav-item flex items-center gap-3 p-3 rounded-xl glass hover:bg-white/10 transition-all">
+                <span class="text-xl">⚙️</span>
+                <span class="font-semibold">Configuración</span>
+            </a>
+        </nav>
+        
+        <!-- Quick Actions -->
+        <div class="mt-8">
+            <h4 class="text-sm font-semibold text-gray-300 mb-4">Acciones Rápidas</h4>
+            <div class="space-y-2">
+                <button onclick="createNewChallenge()" class="w-full text-left p-3 rounded-lg glass hover:bg-white/10 transition-all text-sm">
+                    <span class="mr-2">➕</span>Nuevo Reto
+                </button>
+                <button onclick="sendNotification()" class="w-full text-left p-3 rounded-lg glass hover:bg-white/10 transition-all text-sm">
+                    <span class="mr-2">📢</span>Enviar Aviso
+                </button>
+                <button onclick="exportData()" class="w-full text-left p-3 rounded-lg glass hover:bg-white/10 transition-all text-sm">
+                    <span class="mr-2">📊</span>Exportar Datos
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="pt-20 md:ml-64 min-h-screen">
+        <div class="p-6">
+            <!-- Overview Section -->
+            <div id="overview" class="dashboard-section">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-4xl font-bold mb-2">
+                            <span class="text-transparent bg-clip-text animated-gradient">Dashboard</span>
+                            Mágico
+                        </h1>
+                        <p class="text-gray-400">Bienvenido de vuelta, Pedro. Tu casa está prosperando.</p>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-4 md:mt-0">
+                        <button onclick="refreshData()" class="btn-magic px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg font-semibold text-sm">
+                            🔄 Actualizar
+                        </button>
+                        <button onclick="shareProgress()" class="btn-magic px-4 py-2 glass border border-gray-600 rounded-lg font-semibold text-sm hover:border-gray-400">
+                            📤 Compartir
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Key Metrics -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Total Raised -->
+                    <div class="card-hover glass rounded-2xl p-6 border border-green-400/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-3xl">💰</div>
+                            <span class="status-active px-2 py-1 rounded-full text-xs font-semibold">ACTIVO</span>
+                        </div>
+                        <div class="text-3xl font-bold text-green-400 mb-1">€2,850</div>
+                        <div class="text-sm text-gray-400 mb-2">Recaudado Total</div>
+                        <div class="text-xs text-green-400">
+                            <span class="font-semibold">+€340</span> esta semana
+                        </div>
+                    </div>
+                    
+                    <!-- Students Participating -->
+                    <div class="card-hover glass rounded-2xl p-6 border border-blue-400/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-3xl">👨‍👩‍👧‍👦</div>
+                            <span class="status-completed px-2 py-1 rounded-full text-xs font-semibold">95%</span>
+                        </div>
+                        <div class="text-3xl font-bold text-blue-400 mb-1">24</div>
+                        <div class="text-sm text-gray-400 mb-2">Alumnos Activos</div>
+                        <div class="text-xs text-blue-400">
+                            <span class="font-semibold">+2</span> nuevos esta semana
+                        </div>
+                    </div>
+                    
+                    <!-- Challenges Completed -->
+                    <div class="card-hover glass rounded-2xl p-6 border border-purple-400/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-3xl">🎯</div>
+                            <span class="status-pending px-2 py-1 rounded-full text-xs font-semibold">3/5</span>
+                        </div>
+                        <div class="text-3xl font-bold text-purple-400 mb-1">12</div>
+                        <div class="text-sm text-gray-400 mb-2">Retos Completados</div>
+                        <div class="text-xs text-purple-400">
+                            <span class="font-semibold">+4</span> esta semana
+                        </div>
+                    </div>
+                    
+                    <!-- Collections Sold -->
+                    <div class="card-hover glass rounded-2xl p-6 border border-yellow-400/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-3xl">🛍️</div>
+                            <span class="status-active px-2 py-1 rounded-full text-xs font-semibold">¡ÉXITO!</span>
+                        </div>
+                        <div class="text-3xl font-bold text-yellow-400 mb-1">156</div>
+                        <div class="text-sm text-gray-400 mb-2">Colecciones Vendidas</div>
+                        <div class="text-xs text-yellow-400">
+                            <span class="font-semibold">€2,340</span> generados
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Progress Chart -->
+                    <div class="glass rounded-2xl p-6 border border-gray-600">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Progreso hacia el Viaje</h3>
+                            <div class="text-sm text-gray-400">Objetivo: €3,000</div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Progreso</span>
+                                <span class="font-bold text-green-400">95%</span>
+                            </div>
+                            <div class="h-4 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="progress-bar h-full bg-gradient-to-r from-green-400 to-emerald-500" style="width: 95%"></div>
+                            </div>
+                            <p class="text-green-400 text-sm mt-2 font-semibold">¡Solo faltan €150! 🎉</p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Colecciones</span>
+                                <span class="font-bold">€2,340 (82%)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Patrocinios</span>
+                                <span class="font-bold">€1,570 (55%)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Retos Completados</span>
+                                <span class="font-bold">€510 (18%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Activity Chart -->
+                    <div class="glass rounded-2xl p-6 border border-gray-600">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Actividad Reciente</h3>
+                            <button onclick="toggleTimeRange()" class="text-sm text-blue-400 hover:text-blue-300">Últimos 7 días</button>
+                        </div>
+                        
+                        <canvas id="activityChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="glass rounded-2xl p-6 border border-gray-600">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Actividad Reciente</h3>
+                        <button onclick="viewAllActivity()" class="text-sm text-blue-400 hover:text-blue-300">Ver todo</button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 glass rounded-xl border border-green-400/20">
+                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                <span class="text-sm">🌱</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-green-400">María García completó "Recoger 100 botellas"</div>
+                                <div class="text-sm text-gray-400">Hace 2 horas • +€25 para la casa</div>
+                            </div>
+                            <div class="text-green-400 font-bold">+25 pts</div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 p-4 glass rounded-xl border border-blue-400/20">
+                            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                                <span class="text-sm">🛍️</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-blue-400">Nueva colección vendida</div>
+                                <div class="text-sm text-gray-400">Hace 3 horas • Familia López compró "Heráldica de Fuego"</div>
+                            </div>
+                            <div class="text-blue-400 font-bold">€15</div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 p-4 glass rounded-xl border border-purple-400/20">
+                            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                                <span class="text-sm">🤝</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-purple-400">Nuevo patrocinador</div>
+                                <div class="text-sm text-gray-400">Hace 5 horas • Panadería "El Sol" se unió como patrocinador</div>
+                            </div>
+                            <div class="text-purple-400 font-bold">€200</div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 p-4 glass rounded-xl border border-yellow-400/20">
+                            <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+                                <span class="text-sm">🏆</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-yellow-400">Equipo ganó reto grupal</div>
+                                <div class="text-sm text-gray-400">Hace 1 día • Grupo "Dragones" completó "Semana sin plástico"</div>
+                            </div>
+                            <div class="text-yellow-400 font-bold">+50 pts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Challenges Section -->
+            <div id="challenges" class="dashboard-section hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold">
+                        <span class="text-transparent bg-clip-text animated-gradient">Gestión</span>
+                        de Retos
+                    </h2>
+                    <button onclick="createNewChallenge()" class="btn-magic px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl font-bold">
+                        ➕ Crear Nuevo Reto
+                    </button>
+                </div>
+                
+                <!-- Active Challenges -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-6">Retos Activos</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Challenge 1 -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-green-400/30">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="text-3xl">🌱</div>
+                                <span class="status-active px-3 py-1 rounded-full text-sm font-semibold">ACTIVO</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-green-400 mb-2">Recoger 100 botellas de plástico</h4>
+                            <p class="text-gray-400 text-sm mb-4">Ayuda al planeta recogiendo botellas plásticas del entorno del colegio y vecindario.</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span>Progreso</span>
+                                    <span class="font-bold">78/100</span>
+                                </div>
+                                <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="progress-bar h-full bg-gradient-to-r from-green-400 to-emerald-500" style="width: 78%"></div>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Participantes</span>
+                                    <span class="font-bold text-green-400">15 alumnos</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Recompensa</span>
+                                    <span class="font-bold text-green-400">€25</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="editChallenge('recycling')" class="flex-1 py-2 glass border border-gray-600 rounded-lg text-sm hover:border-gray-400 transition-all">
+                                    ✏️ Editar
+                                </button>
+                                <button onclick="viewChallengeDetails('recycling')" class="flex-1 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg text-sm font-semibold">
+                                    👁️ Detalles
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Challenge 2 -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-blue-400/30">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="text-3xl">🤝</div>
+                                <span class="status-active px-3 py-1 rounded-full text-sm font-semibold">ACTIVO</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-blue-400 mb-2">Visitar residencia de ancianos</h4>
+                            <p class="text-gray-400 text-sm mb-4">Llevar alegría a los mayores de la residencia local con actividades y compañía.</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span>Progreso</span>
+                                    <span class="font-bold">Organizando</span>
+                                </div>
+                                <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="progress-bar h-full bg-gradient-to-r from-blue-400 to-cyan-500" style="width: 25%"></div>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Voluntarios</span>
+                                    <span class="font-bold text-blue-400">8 alumnos</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Recompensa</span>
+                                    <span class="font-bold text-blue-400">€50</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="editChallenge('elderly')" class="flex-1 py-2 glass border border-gray-600 rounded-lg text-sm hover:border-gray-400 transition-all">
+                                    ✏️ Editar
+                                </button>
+                                <button onclick="viewChallengeDetails('elderly')" class="flex-1 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg text-sm font-semibold">
+                                    👁️ Detalles
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Challenge 3 -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-purple-400/30">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="text-3xl">🎭</div>
+                                <span class="status-pending px-3 py-1 rounded-full text-sm font-semibold">PENDIENTE</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-purple-400 mb-2">Obra de teatro solidaria</h4>
+                            <p class="text-gray-400 text-sm mb-4">Preparar y representar una obra de teatro con fines solidarios para la comunidad.</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span>Preparación</span>
+                                    <span class="font-bold">Planificando</span>
+                                </div>
+                                <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="progress-bar h-full bg-gradient-to-r from-purple-400 to-pink-500" style="width: 10%"></div>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Participantes</span>
+                                    <span class="font-bold text-purple-400">12 alumnos</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Recompensa</span>
+                                    <span class="font-bold text-purple-400">€75</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="editChallenge('theater')" class="flex-1 py-2 glass border border-gray-600 rounded-lg text-sm hover:border-gray-400 transition-all">
+                                    ✏️ Editar
+                                </button>
+                                <button onclick="startChallenge('theater')" class="flex-1 py-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg text-sm font-semibold">
+                                    🚀 Iniciar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Challenge 4 -->
+                        <div class="challenge-card glass rounded-2xl p-6 border border-orange-400/30">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="text-3xl">⚽</div>
+                                <span class="status-completed px-3 py-1 rounded-full text-sm font-semibold">COMPLETADO</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-orange-400 mb-2">Maratón solidaria</h4>
+                            <p class="text-gray-400 text-sm mb-4">Correr kilómetros para recaudar fondos para causas locales. Cada kilómetro cuenta.</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span>Resultado</span>
+                                    <span class="font-bold text-green-400">¡ÉXITO TOTAL!</span>
+                                </div>
+                                <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="progress-bar h-full bg-gradient-to-r from-orange-400 to-red-500" style="width: 100%"></div>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Participantes</span>
+                                    <span class="font-bold text-orange-400">20 alumnos</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span>Recaudado</span>
+                                    <span class="font-bold text-orange-400">€120</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="viewResults('marathon')" class="flex-1 py-2 glass border border-gray-600 rounded-lg text-sm hover:border-gray-400 transition-all">
+                                    🏆 Resultados
+                                </button>
+                                <button onclick="duplicateChallenge('marathon')" class="flex-1 py-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg text-sm font-semibold">
+                                    📋 Duplicar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Challenge Templates -->
+                <div class="glass rounded-2xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-bold mb-6">Plantillas de Retos</h3>
+                    <p class="text-gray-400 mb-6">Crea nuevos retos rápidamente usando nuestras plantillas predefinidas:</p>
+                    
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="glass rounded-xl p-4 border border-green-400/30 cursor-pointer hover:bg-green-500/10 transition-all" onclick="useTemplate('ecology')">
+                            <div class="text-2xl mb-2">🌱</div>
+                            <h4 class="font-bold text-green-400 mb-1">Ecología</h4>
+                            <p class="text-sm text-gray-400">Retos para cuidar el planeta</p>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-4 border border-blue-400/30 cursor-pointer hover:bg-blue-500/10 transition-all" onclick="useTemplate('solidarity')">
+                            <div class="text-2xl mb-2">🤝</div>
+                            <h4 class="font-bold text-blue-400 mb-1">Solidaridad</h4>
+                            <p class="text-sm text-gray-400">Ayudar a la comunidad</p>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-4 border border-purple-400/30 cursor-pointer hover:bg-purple-500/10 transition-all" onclick="useTemplate('culture')">
+                            <div class="text-2xl mb-2">🎭</div>
+                            <h4 class="font-bold text-purple-400 mb-1">Cultura</h4>
+                            <p class="text-sm text-gray-400">Explorar arte e historia</p>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-4 border border-orange-400/30 cursor-pointer hover:bg-orange-500/10 transition-all" onclick="useTemplate('sports')">
+                            <div class="text-2xl mb-2">⚽</div>
+                            <h4 class="font-bold text-orange-400 mb-1">Deportes</h4>
+                            <p class="text-sm text-gray-400">Actividad física y equipo</p>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-4 border border-cyan-400/30 cursor-pointer hover:bg-cyan-500/10 transition-all" onclick="useTemplate('science')">
+                            <div class="text-2xl mb-2">🔬</div>
+                            <h4 class="font-bold text-cyan-400 mb-1">Ciencia</h4>
+                            <p class="text-sm text-gray-400">Experimentos y descubrimientos</p>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-4 border border-pink-400/30 cursor-pointer hover:bg-pink-500/10 transition-all" onclick="useTemplate('innovation')">
+                            <div class="text-2xl mb-2">💡</div>
+                            <h4 class="font-bold text-pink-400 mb-1">Innovación</h4>
+                            <p class="text-sm text-gray-400">Creatividad y emprendimiento</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Students Section -->
+            <div id="students" class="dashboard-section hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold">
+                        <span class="text-transparent bg-clip-text animated-gradient">Gestión</span>
+                        de Alumnos
+                    </h2>
+                    <div class="flex gap-3">
+                        <button onclick="exportStudentData()" class="btn-magic px-4 py-2 glass border border-gray-600 rounded-lg font-semibold text-sm hover:border-gray-400">
+                            📊 Exportar
+                        </button>
+                        <button onclick="sendGroupMessage()" class="btn-magic px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg font-semibold text-sm">
+                            📢 Mensaje Grupal
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Students Stats -->
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+                    <div class="glass rounded-2xl p-6 border border-blue-400/30 text-center">
+                        <div class="text-3xl mb-2">👨‍👩‍👧‍👦</div>
+                        <div class="text-2xl font-bold text-blue-400 mb-1">25</div>
+                        <div class="text-sm text-gray-400">Total Alumnos</div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6 border border-green-400/30 text-center">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <div class="text-2xl font-bold text-green-400 mb-1">24</div>
+                        <div class="text-sm text-gray-400">Activos (96%)</div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6 border border-purple-400/30 text-center">
+                        <div class="text-3xl mb-2">🏆</div>
+                        <div class="text-2xl font-bold text-purple-400 mb-1">18</div>
+                        <div class="text-sm text-gray-400">Participando</div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6 border border-yellow-400/30 text-center">
+                        <div class="text-3xl mb-2">⭐</div>
+                        <div class="text-2xl font-bold text-yellow-400 mb-1">156</div>
+                        <div class="text-sm text-gray-400">Pts Promedio</div>
+                    </div>
+                </div>
+                
+                <!-- Students List -->
+                <div class="glass rounded-2xl p-6 border border-gray-600">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Lista de Alumnos</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Buscar alumno..." class="px-3 py-2 glass border border-gray-600 rounded-lg text-white placeholder-gray-400 text-sm">
+                            <select class="px-3 py-2 glass border border-gray-600 rounded-lg text-white text-sm">
+                                <option>Todos los retos</option>
+                                <option>Activos</option>
+                                <option>Inactivos</option>
+                                <option>Top 10</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-600">
+                                    <th class="text-left py-3 px-4 font-semibold">Alumno</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Puntos</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Retos</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Colecciones</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Estado</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTable">
+                                <!-- Students will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Finance Section -->
+            <div id="finance" class="dashboard-section hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold">
+                        <span class="text-transparent bg-clip-text animated-gradient">Gestión</span>
+                        Financiera
+                    </h2>
+                    <div class="flex gap-3">
+                        <button onclick="generateReport()" class="btn-magic px-4 py-2 glass border border-gray-600 rounded-lg font-semibold text-sm hover:border-gray-400">
+                            📊 Generar Reporte
+                        </button>
+                        <button onclick="manageSponsors()" class="btn-magic px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg font-semibold text-sm">
+                            🤝 Patrocinadores
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Financial Overview -->
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass rounded-2xl p-6 border border-green-400/30">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">💰</div>
+                            <div class="text-3xl font-bold text-green-400 mb-2">€2,850</div>
+                            <div class="text-gray-400 mb-4">Recaudado Total</div>
+                            <div class="text-sm text-green-400">
+                                <span class="font-semibold">+€340</span> esta semana
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6 border border-blue-400/30">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">🤝</div>
+                            <div class="text-3xl font-bold text-blue-400 mb-2">€1,570</div>
+                            <div class="text-gray-400 mb-4">Patrocinios</div>
+                            <div class="text-sm text-blue-400">
+                                <span class="font-semibold">8</span> patrocinadores activos
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-6 border border-purple-400/30">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">🛍️</div>
+                            <div class="text-3xl font-bold text-purple-400 mb-2">€1,280</div>
+                            <div class="text-gray-400 mb-4">Colecciones</div>
+                            <div class="text-sm text-purple-400">
+                                <span class="font-semibold">156</span> vendidas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Financial Breakdown -->
+                <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Income Breakdown -->
+                    <div class="glass rounded-2xl p-6 border border-gray-600">
+                        <h3 class="text-xl font-bold mb-6">Desglose de Ingresos</h3>
+                        <canvas id="incomeChart" width="400" height="300"></canvas>
+                    </div>
+                    
+                    <!-- Expenses -->
+                    <div class="glass rounded-2xl p-6 border border-gray-600">
+                        <h3 class="text-xl font-bold mb-6">Gastos y Comisiones</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 glass rounded-lg">
+                                <span>Comisión AMPA (10%)</span>
+                                <span class="font-bold text-blue-400">€285</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 glass rounded-lg">
+                                <span>Costo de colecciones</span>
+                                <span class="font-bold text-purple-400">€468</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 glass rounded-lg">
+                                <span>Gastos de organización</span>
+                                <span class="font-bold text-gray-400">€0</span>
+                            </div>
+                            <div class="border-t border-gray-600 pt-4">
+                                <div class="flex justify-between items-center text-lg">
+                                    <span class="font-semibold">Neto para el viaje</span>
+                                    <span class="font-bold text-green-400 text-xl">€2,097</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="glass rounded-2xl p-6 border border-gray-600">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Transacciones Recientes</h3>
+                        <button onclick="viewAllTransactions()" class="text-sm text-blue-400 hover:text-blue-300">Ver todo</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-600">
+                                    <th class="text-left py-3 px-4 font-semibold">Fecha</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Concepto</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Tipo</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Monto</th>
+                                    <th class="text-left py-3 px-4 font-semibold">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-3 px-4 text-sm">13/10/2025</td>
+                                    <td class="py-3 px-4 text-sm">Venta de colección - Familia García</td>
+                                    <td class="py-3 px-4 text-sm"><span class="status-active px-2 py-1 rounded-full text-xs">Colección</span></td>
+                                    <td class="py-3 px-4 text-sm font-bold text-green-400">+€15</td>
+                                    <td class="py-3 px-4 text-sm"><span class="text-green-400">Completado</span></td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-3 px-4 text-sm">13/10/2025</td>
+                                    <td class="py-3 px-4 text-sm">Reto completado - María García</td>
+                                    <td class="py-3 px-4 text-sm"><span class="status-completed px-2 py-1 rounded-full text-xs">Reto</span></td>
+                                    <td class="py-3 px-4 text-sm font-bold text-green-400">+€25</td>
+                                    <td class="py-3 px-4 text-sm"><span class="text-green-400">Completado</span></td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-3 px-4 text-sm">12/10/2025</td>
+                                    <td class="py-3 px-4 text-sm">Patrocinio - Panadería "El Sol"</td>
+                                    <td class="py-3 px-4 text-sm"><span class="status-pending px-2 py-1 rounded-full text-xs">Patrocinio</span></td>
+                                    <td class="py-3 px-4 text-sm font-bold text-green-400">+€200</td>
+                                    <td class="py-3 px-4 text-sm"><span class="text-blue-400">Pendiente</span></td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-3 px-4 text-sm">12/10/2025</td>
+                                    <td class="py-3 px-4 text-sm">Comisión AMPA - Octubre</td>
+                                    <td class="py-3 px-4 text-sm"><span class="status-pending px-2 py-1 rounded-full text-xs">Comisión</span></td>
+                                    <td class="py-3 px-4 text-sm font-bold text-red-400">-€34</td>
+                                    <td class="py-3 px-4 text-sm"><span class="text-green-400">Completado</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="py-8 glass border-t border-white/10 md:ml-64">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Eventoo Cognitive EDU. 
+                    <span class="text-blue-400">🏰 Hecho con magia educativa.</span>
+                </p>
+                <div class="flex gap-6 text-sm text-gray-400">
+                    <a href="#" class="hover:text-blue-400 transition-colors">Ayuda</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Contacto</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Privacidad</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Notifications Panel -->
+    <div id="notificationsPanel" class="hidden fixed top-16 right-4 w-80 glass rounded-2xl p-6 border border-white/20 shadow-2xl z-50">
+        <h3 class="text-lg font-bold mb-4">Notificaciones</h3>
+        <div class="space-y-3">
+            <div class="flex items-start gap-3 p-3 glass rounded-xl border border-green-400/20">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-sm">🌱</div>
+                <div class="flex-1">
+                    <div class="font-semibold text-green-400 text-sm">Reto Completado</div>
+                    <div class="text-xs text-gray-400">María García completó "Recoger 100 botellas"</div>
+                </div>
+            </div>
+            
+            <div class="flex items-start gap-3 p-3 glass rounded-xl border border-blue-400/20">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm">🛍️</div>
+                <div class="flex-1">
+                    <div class="font-semibold text-blue-400 text-sm">Nueva Venta</div>
+                    <div class="text-xs text-gray-400">Familia López compró "Heráldica de Fuego"</div>
+                </div>
+            </div>
+            
+            <div class="flex items-start gap-3 p-3 glass rounded-xl border border-purple-400/20">
+                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-sm">🤝</div>
+                <div class="flex-1">
+                    <div class="font-semibold text-purple-400 text-sm">Nuevo Patrocinador</div>
+                    <div class="text-xs text-gray-400">Panadería "El Sol" se unió</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+        // Dashboard State
+        let currentSection = 'overview';
+        let studentsData = [];
+        let activityChart = null;
+        let incomeChart = null;
+        
+        // Initialize Dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCharts();
+            generateStudentsData();
+            populateStudentsTable();
+            
+            // Initialize real-time updates
+            setInterval(updateRealTimeData, 30000); // Update every 30 seconds
+        });
+        
+        // Navigation Functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+        
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.dashboard-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.remove('hidden');
+            
+            // Add active class to clicked nav item
+            event.target.closest('.dashboard-nav-item').classList.add('active');
+            
+            currentSection = sectionName;
+            
+            // Initialize section-specific content
+            if (sectionName === 'finance' && !incomeChart) {
+                setTimeout(initializeIncomeChart, 100);
+            }
+        }
+        
+        function toggleNotifications() {
+            const panel = document.getElementById('notificationsPanel');
+            panel.classList.toggle('hidden');
+        }
+        
+        // Chart Initialization
+        function initializeCharts() {
+            // Activity Chart
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                    datasets: [{
+                        label: 'Puntos Ganados',
+                        data: [120, 190, 300, 500, 200, 300, 450],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Retos Completados',
+                        data: [2, 3, 5, 8, 3, 4, 6],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#9ca3af'
+                            },
+                            grid: {
+                                color: 'rgba(156, 163, 175, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#9ca3af'
+                            },
+                            grid: {
+                                color: 'rgba(156, 163, 175, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initializeIncomeChart() {
+            const ctx = document.getElementById('incomeChart').getContext('2d');
+            incomeChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Colecciones', 'Patrocinios', 'Retos'],
+                    datasets: [{
+                        data: [1280, 1570, 510],
+                        backgroundColor: [
+                            'rgba(147, 51, 234, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(16, 185, 129, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(147, 51, 234, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Data Generation
+        function generateStudentsData() {
+            const names = [
+                'María García', 'Carlos López', 'Ana Martínez', 'Pedro Rodríguez', 'Lucía Fernández',
+                'Diego González', 'Sofía Pérez', 'Alejandro Sánchez', 'Valentina Ramírez', 'Mateo Torres',
+                'Camila Flores', 'Sebastián Herrera', 'Martina Castro', 'Daniel Morales', 'Renata Vargas',
+                'Emilio Cruz', 'Isabella Reyes', 'Santiago Mendoza', 'Ximena Guzmán', 'Andrés Delgado',
+                'Natalia Ruiz', 'Tomás Aguilar', 'Zoe Herrera', 'Manuel Silva', 'Victoria Rojas'
+            ];
+            
+            studentsData = names.map((name, index) => ({
+                id: index + 1,
+                name: name,
+                points: Math.floor(Math.random() * 300) + 50,
+                challengesCompleted: Math.floor(Math.random() * 8) + 1,
+                collectionsBought: Math.floor(Math.random() * 10) + 1,
+                status: Math.random() > 0.1 ? 'active' : 'inactive',
+                avatar: `👦` // Simplified for demo
+            }));
+        }
+        
+        function populateStudentsTable() {
+            const tbody = document.getElementById('studentsTable');
+            tbody.innerHTML = '';
+            
+            studentsData.forEach(student => {
+                const row = document.createElement('tr');
+                row.className = 'student-card border-b border-gray-700 hover:bg-white/5';
+                
+                row.innerHTML = `
+                    <td class="py-3 px-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-sm">
+                                ${student.avatar}
+                            </div>
+                            <span class="font-semibold">${student.name}</span>
+                        </div>
+                    </td>
+                    <td class="py-3 px-4">
+                        <span class="font-bold text-yellow-400">${student.points} pts</span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <span class="text-green-400">${student.challengesCompleted}</span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <span class="text-purple-400">${student.collectionsBought}</span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <span class="status-${student.status} px-2 py-1 rounded-full text-xs font-semibold">
+                            ${student.status === 'active' ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="flex gap-2">
+                            <button onclick="viewStudentDetails(${student.id})" class="text-blue-400 hover:text-blue-300 text-sm">
+                                👁️
+                            </button>
+                            <button onclick="messageStudent(${student.id})" class="text-green-400 hover:text-green-300 text-sm">
+                                💬
+                            </button>
+                            <button onclick="rewardStudent(${student.id})" class="text-yellow-400 hover:text-yellow-300 text-sm">
+                                ⭐
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Real-time Updates
+        function updateRealTimeData() {
+            // Simulate real-time data updates
+            const metrics = {
+                totalRaised: 2850,
+                activeStudents: 24,
+                completedChallenges: 12,
+                collectionsSold: 156
+            };
+            
+            // Add small random changes
+            Object.keys(metrics).forEach(key => {
+                const change = Math.floor(Math.random() * 10) - 5;
+                metrics[key] += change;
+            });
+            
+            // Update UI with new metrics
+            console.log('Real-time update:', metrics);
+        }
+        
+        // Action Functions
+        function refreshData() {
+            showNotification('Datos actualizados correctamente', 'success');
+            // Simulate data refresh
+            setTimeout(() => {
+                updateRealTimeData();
+            }, 1000);
+        }
+        
+        function shareProgress() {
+            showNotification('Progreso compartido con las familias', 'info');
+        }
+        
+        function createNewChallenge() {
+            showNotification('Abriendo creador de retos...', 'info');
+        }
+        
+        function sendNotification() {
+            showNotification('Enviando notificación a los alumnos...', 'info');
+        }
+        
+        function exportData() {
+            showNotification('Exportando datos...', 'info');
+        }
+        
+        function viewAllActivity() {
+            showNotification('Cargando toda la actividad...', 'info');
+        }
+        
+        function toggleTimeRange() {
+            showNotification('Cambiando rango de tiempo...', 'info');
+        }
+        
+        function editChallenge(challengeId) {
+            showNotification(`Editando reto: ${challengeId}`, 'info');
+        }
+        
+        function viewChallengeDetails(challengeId) {
+            showNotification(`Mostrando detalles del reto: ${challengeId}`, 'info');
+        }
+        
+        function startChallenge(challengeId) {
+            showNotification(`Iniciando reto: ${challengeId}`, 'success');
+        }
+        
+        function viewResults(challengeId) {
+            showNotification(`Mostrando resultados del reto: ${challengeId}`, 'info');
+        }
+        
+        function duplicateChallenge(challengeId) {
+            showNotification(`Duplicando reto: ${challengeId}`, 'info');
+        }
+        
+        function useTemplate(templateType) {
+            showNotification(`Usando plantilla: ${templateType}`, 'info');
+        }
+        
+        function exportStudentData() {
+            showNotification('Exportando datos de alumnos...', 'info');
+        }
+        
+        function sendGroupMessage() {
+            showNotification('Enviando mensaje grupal...', 'info');
+        }
+        
+        function viewStudentDetails(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            showNotification(`Mostrando detalles de ${student.name}`, 'info');
+        }
+        
+        function messageStudent(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            showNotification(`Enviando mensaje a ${student.name}`, 'info');
+        }
+        
+        function rewardStudent(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            showNotification(`Recompensando a ${student.name}`, 'success');
+        }
+        
+        function generateReport() {
+            showNotification('Generando reporte financiero...', 'info');
+        }
+        
+        function manageSponsors() {
+            showNotification('Abriendo gestión de patrocinadores...', 'info');
+        }
+        
+        function viewAllTransactions() {
+            showNotification('Cargando todas las transacciones...', 'info');
+        }
+        
+        function openSettings() {
+            showNotification('Abriendo configuración...', 'info');
+        }
+        
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-20 right-4 p-4 rounded-xl shadow-2xl z-50 max-w-sm ${
+                type === 'success' ? 'bg-green-500/90 border border-green-400' :
+                type === 'error' ? 'bg-red-500/90 border border-red-400' :
+                'bg-blue-500/90 border border-blue-400'
+            }`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="text-2xl">
+                        ${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-semibold">${message}</div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-white/80 hover:text-white">
+                        ✕
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+        
+        // Close notifications when clicking outside
+        document.addEventListener('click', (event) => {
+            const notificationsPanel = document.getElementById('notificationsPanel');
+            const notificationsButton = event.target.closest('[onclick="toggleNotifications()"]');
+            
+            if (!notificationsPanel.contains(event.target) && !notificationsButton) {
+                notificationsPanel.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

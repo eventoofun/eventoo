@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes Gamificados - Eventoo Cognitive EDU</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Cards */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="py-12 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold mb-4">
+                <span class="text-transparent bg-clip-text animated-gradient">Paquetes</span>
+                Gamificados
+            </h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                🧙‍♂️ "Cada paquete es un mundo de aventuras educativas que transforman el aprendizaje en magia..."
+            </p>
+        </div>
+    </header>
+    
+    <!-- Packages Grid -->
+    <main class="py-12">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Ecología Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-green-400/30">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🌱</div>
+                        <h3 class="text-2xl font-bold text-green-400 mb-2">Ecología</h3>
+                        <p class="text-gray-400 mb-4">Retos para cuidar el planeta</p>
+                        <div class="text-3xl font-bold text-green-400">€150</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Recoger 100 botellas de plástico</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Plantar 50 árboles en el colegio</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Semana sin plástico desechable</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-green-400 text-xl">✓</span>
+                            <span class="text-sm">Crear compost escolar funcional</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Dificultad: <span class="text-green-400 font-semibold">Fácil</span></div>
+                        <div class="text-sm text-gray-400 mb-2">Duración: <span class="font-semibold">4-6 semanas</span></div>
+                        <div class="text-sm text-gray-400">Participación: <span class="font-semibold">100% clase</span></div>
+                    </div>
+                </div>
+                
+                <!-- Solidaridad Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-blue-400/30">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🤝</div>
+                        <h3 class="text-2xl font-bold text-blue-400 mb-2">Solidaridad</h3>
+                        <p class="text-gray-400 mb-4">Ayudar a la comunidad</p>
+                        <div class="text-3xl font-bold text-blue-400">€200</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-blue-400 text-xl">✓</span>
+                            <span class="text-sm">Visitar residencia de ancianos local</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-blue-400 text-xl">✓</span>
+                            <span class="text-sm">Organizar recogida de alimentos</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-blue-400 text-xl">✓</span>
+                            <span class="text-sm">40 horas de voluntariado comunitario</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-blue-400 text-xl">✓</span>
+                            <span class="text-sm">Campaña de donación de juguetes</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Dificultad: <span class="text-blue-400 font-semibold">Media</span></div>
+                        <div class="text-sm text-gray-400 mb-2">Duración: <span class="font-semibold">6-8 semanas</span></div>
+                        <div class="text-sm text-gray-400">Participación: <span class="font-semibold">80% clase</span></div>
+                    </div>
+                </div>
+                
+                <!-- Cultura Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-purple-400/30">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🎭</div>
+                        <h3 class="text-2xl font-bold text-purple-400 mb-2">Cultura</h3>
+                        <p class="text-gray-400 mb-4">Explorar arte e historia</p>
+                        <div class="text-3xl font-bold text-purple-400">€180</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Visitar 3 museos locales importantes</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Representar obra de teatro solidaria</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Proyecto de historia local</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-purple-400 text-xl">✓</span>
+                            <span class="text-sm">Exposición de arte estudiantil</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Dificultad: <span class="text-purple-400 font-semibold">Media</span></div>
+                        <div class="text-sm text-gray-400 mb-2">Duración: <span class="font-semibold">8-10 semanas</span></div>
+                        <div class="text-sm text-gray-400">Participación: <span class="font-semibold">60% clase</span></div>
+                    </div>
+                </div>
+                
+                <!-- Deportes Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-orange-400/30">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">⚽</div>
+                        <h3 class="text-2xl font-bold text-orange-400 mb-2">Deportes</h3>
+                        <p class="text-gray-400 mb-4">Actividad física y equipo</p>
+                        <div class="text-3xl font-bold text-orange-400">€120</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">Organizar maratón solidaria 5K</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">Torneo inter-clases multideporte</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">30 días de ejercicio diario</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-orange-400 text-xl">✓</span>
+                            <span class="text-sm">Deporte inclusivo con colegio vecino</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Dificultad: <span class="text-orange-400 font-semibold">Fácil</span></div>
+                        <div class="text-sm text-gray-400 mb-2">Duración: <span class="font-semibold">4-6 semanas</span></div>
+                        <div class="text-sm text-gray-400">Participación: <span class="font-semibold">90% clase</span></div>
+                    </div>
+                </div>
+                
+                <!-- Ciencia Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-cyan-400/30">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🔬</div>
+                        <h3 class="text-2xl font-bold text-cyan-400 mb-2">Ciencia</h3>
+                        <p class="text-gray-400 mb-4">Experimentos y descubrimientos</p>
+                        <div class="text-3xl font-bold text-cyan-400">€220</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-cyan-400 text-xl">✓</span>
+                            <span class="text-sm">Feria de ciencia comarcal</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-cyan-400 text-xl">✓</span>
+                            <span class="text-sm">12 experimentos científicos documentados</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-cyan-400 text-xl">✓</span>
+                            <span class="text-sm">Proyecto de robótica educativa</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-cyan-400 text-xl">✓</span>
+                            <span class="text-sm">Noche de observación astronómica</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Dificultad: <span class="text-cyan-400 font-semibold">Alta</span></div>
+                        <div class="text-sm text-gray-400 mb-2">Duración: <span class="font-semibold">10-12 semanas</span></div>
+                        <div class="text-sm text-gray-400">Participación: <span class="font-semibold">50% clase</span></div>
+                    </div>
+                </div>
+                
+                <!-- Innovación Package -->
+                <div class="card-hover glass rounded-2xl p-8 border border-pink-400/30">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">💡</div>
+                        <h3 class="text-2xl font-bold text-pink-400 mb-2">Innovación</h3>
+                        <p class="text-gray-400 mb-4">Creatividad y emprendimiento</p>
+                        <div class="text-3xl font-bold text-pink-400">€300</div>
+                        <p class="text-sm text-gray-400">al completar el paquete</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-pink-400 text-xl">✓</span>
+                            <span class="text-sm">Hackathon escolar de 48 horas</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-pink-400 text-xl">✓</span>
+                            <span class="text-sm">Plan de negocio para emprendimiento</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-pink-400 text-xl">✓</span>
+                            <span class="text-sm">App móvil para mejorar el colegio</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 glass rounded-lg">
+                            <span class="text-pink-400 text-xl">✓</span>
+                            <span class="text-sm">Solución innovadora a problema local</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-2">Dificultad: <span class="text-pink-400 font-semibold">Alta</span></div>
+                        <div class="text-sm text-gray-400 mb-2">Duración: <span class="font-semibold">12-16 semanas</span></div>
+                        <div class="text-sm text-gray-400">Participación: <span class="font-semibold">40% clase</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Summary -->
+            <div class="glass rounded-2xl p-8 border border-yellow-400/30 text-center">
+                <h3 class="text-2xl font-bold text-yellow-400 mb-6">📊 Resumen de Paquetes</h3>
+                
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+                    <div class="glass rounded-xl p-6 border border-blue-400/30">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <div class="text-2xl font-bold text-blue-400 mb-1">6</div>
+                        <div class="text-sm text-gray-400">Paquetes Disponibles</div>
+                    </div>
+                    
+                    <div class="glass rounded-xl p-6 border border-green-400/30">
+                        <div class="text-3xl mb-2">⏱️</div>
+                        <div class="text-2xl font-bold text-green-400 mb-1">4-16</div>
+                        <div class="text-sm text-gray-400">Semanas de Duración</div>
+                    </div>
+                    
+                    <div class="glass rounded-xl p-6 border border-purple-400/30">
+                        <div class="text-3xl mb-2">👨‍👩‍👧‍👦</div>
+                        <div class="text-2xl font-bold text-purple-400 mb-1">40-100%</div>
+                        <div class="text-sm text-gray-400">Participación</div>
+                    </div>
+                    
+                    <div class="glass rounded-xl p-6 border border-yellow-400/30">
+                        <div class="text-3xl mb-2">💰</div>
+                        <div class="text-2xl font-bold text-yellow-400 mb-1">€1,170</div>
+                        <div class="text-sm text-gray-400">Potencial Total</div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <h4 class="text-xl font-bold mb-4 text-white">🚀 ¿Listo para empezar?</h4>
+                    <p class="text-gray-400 mb-6">
+                        Cada paquete está diseñado para que los alumnos aprendan mientras ayudan a su comunidad 
+                        y financian su viaje educativo. La magia está en hacer que el aprendizaje sea ÉPICO.
+                    </p>
+                    <a href="wizard-edu.html" class="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl font-bold text-lg hover:scale-105 transition-all">
+                        🏰 Crear mi Casa Mágica
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="py-12 glass border-t border-white/10">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Eventoo Cognitive EDU. 
+                    <span class="text-blue-400">🏰 Hecho con magia educativa.</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

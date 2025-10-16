@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wizard Mágico - Eventoo Cognitive</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animated gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f59e0b, #ec4899);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Step animations */
+        .step-enter {
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        .step-exit {
+            animation: slideOutLeft 0.5s ease-in;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(-100%); opacity: 0; }
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        /* Genie floating */
+        @keyframes genieFloat {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-30px) rotate(2deg); }
+        }
+        
+        .genie-float {
+            animation: genieFloat 6s ease-in-out infinite;
+        }
+        
+        /* Magic button */
+        .btn-magic {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-magic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-magic:hover::before {
+            left: 100%;
+        }
+        
+        .btn-magic:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Form styles */
+        .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #f59e0b;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        /* Character preview */
+        .character-preview {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border: 2px dashed rgba(245, 158, 11, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .character-preview:hover {
+            border-color: #f59e0b;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2);
+        }
+        
+        /* Wish cards */
+        .wish-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .wish-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .wish-card.selected {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        /* Loading spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Success animation */
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .success-animation {
+            animation: successPulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-2xl">🧞</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-glow">Eventoo</h1>
+                        <p class="text-xs text-gray-400">Cognitive</p>
+                    </div>
+                </div>
+                
+                <!-- Progress -->
+                <div class="hidden md:flex items-center gap-4">
+                    <div class="text-sm text-gray-400">Paso</div>
+                    <div class="w-32 h-2 bg-gray-700 rounded-full overflow-hidden">
+                        <div id="progressBar" class="progress-bar h-full bg-gradient-to-r from-purple-600 to-pink-600" style="width: 20%"></div>
+                    </div>
+                    <div class="text-sm text-gray-400"><span id="currentStep">1</span>/5</div>
+                </div>
+                
+                <!-- Exit -->
+                <button onclick="exitWizard()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 min-h-screen">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <!-- Step 1: Tipo de Evento -->
+            <div id="step1" class="wizard-step">
+                <div class="text-center mb-12">
+                    <div class="text-6xl mb-6 genie-float">🧞</div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        ¿Qué tipo de
+                        <span class="text-transparent bg-clip-text animated-gradient">Magia</span>
+                        necesitas?
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧞 "Dime qué deseas y prepararé el hechizo perfecto..."
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Evento Personal -->
+                    <div class="card-hover glass rounded-3xl p-8 border border-purple-400/30 cursor-pointer" onclick="selectEventType('personal')">
+                        <div class="text-6xl mb-6 text-center">🎉</div>
+                        <h3 class="text-2xl font-bold text-center mb-4 text-purple-300">Evento Personal</h3>
+                        <p class="text-gray-400 text-center leading-relaxed mb-6">
+                            Cumpleaños, aniversarios, despedidas... 
+                            Cualquier celebración que quieras hacer ÉPICA.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-center gap-2">
+                                <span class="text-purple-400">✓</span>
+                                <span>Video-invitación cinematográfico</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-purple-400">✓</span>
+                                <span>3 deseos mágicos</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-purple-400">✓</span>
+                                <span>Colecciones personalizadas</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Evento Educativo -->
+                    <div class="card-hover glass rounded-3xl p-8 border border-blue-400/30 cursor-pointer" onclick="selectEventType('educational')">
+                        <div class="text-6xl mb-6 text-center">🏰</div>
+                        <h3 class="text-2xl font-bold text-center mb-4 text-blue-300">Casa Mágica EDU</h3>
+                        <p class="text-gray-400 text-center leading-relaxed mb-6">
+                            Colegios, AMPAs, clases... 
+                            Gamificación educativa para financiar viajes.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-center gap-2">
+                                <span class="text-blue-400">✓</span>
+                                <span>Sistema de casas gamificado</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-blue-400">✓</span>
+                                <span>Retos ecológicos y sociales</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-blue-400">✓</span>
+                                <span>100% GRATIS para colegios</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Información Básica -->
+            <div id="step2" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        <span class="text-transparent bg-clip-text animated-gradient">Datos</span>
+                        del Evento
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧞 "Cuéntame sobre la celebración..."
+                    </p>
+                </div>
+                
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Nombre del Protagonista</label>
+                            <input type="text" id="protagonistName" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="¿Para quién es la fiesta?">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Tipo de Evento</label>
+                            <select id="eventType" class="form-input w-full px-4 py-3 rounded-xl text-white">
+                                <option value="">Selecciona el tipo</option>
+                                <option value="birthday">Cumpleaños</option>
+                                <option value="anniversary">Aniversario</option>
+                                <option value="graduation">Graduación</option>
+                                <option value="babyshower">Baby Shower</option>
+                                <option value="other">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Fecha del Evento</label>
+                            <input type="date" id="eventDate" class="form-input w-full px-4 py-3 rounded-xl text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Ubicación</label>
+                            <input type="text" id="eventLocation" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="¿Dónde será la magia?">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">Descripción del Evento</label>
+                        <textarea id="eventDescription" rows="4" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="Cuéntanos qué hace especial este evento..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Foto y Personaje -->
+            <div id="step3" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Crea al
+                        <span class="text-transparent bg-clip-text animated-gradient">Héroe</span>
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧞 "Sube una foto y describiré al personaje épico..."
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Foto Upload -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-4">Foto del Protagonista</label>
+                        <div class="character-preview rounded-2xl p-8 text-center cursor-pointer" onclick="document.getElementById('photoUpload').click()">
+                            <div id="photoPreview" class="mb-4">
+                                <div class="w-32 h-32 mx-auto bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                                    <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-400">Click para subir foto</p>
+                            </div>
+                            <input type="file" id="photoUpload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                            <p class="text-sm text-gray-400">JPG, PNG o WebP • Máx 5MB</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Personaje Description -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-4">Describe el Personaje Soñado</label>
+                        <textarea id="characterDescription" rows="8" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="Ej: Un guerrero épico con armadura dorada, capa roja, y una espada mágica que brilla con luz azul..."></textarea>
+                        
+                        <div class="mt-4">
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Estilo Artístico</label>
+                            <select id="artStyle" class="form-input w-full px-4 py-3 rounded-xl text-white">
+                                <option value="fantasy">Fantasía Épica</option>
+                                <option value="cartoon">Dibujo Animado</option>
+                                <option value="realistic">Realista</option>
+                                <option value="anime">Anime/Manga</option>
+                                <option value="cyberpunk">Cyberpunk</option>
+                                <option value="medieval">Medieval</option>
+                            </select>
+                        </div>
+                        
+                        <button onclick="generateCharacter()" class="btn-magic w-full mt-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold">
+                            ✨ Generar Personaje con IA
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Character Preview -->
+                <div id="characterResult" class="mt-12 hidden">
+                    <div class="glass rounded-2xl p-8 border border-yellow-400/30">
+                        <h3 class="text-2xl font-bold text-center mb-6 text-yellow-400">¡Tu Héroe está Listo!</h3>
+                        <div id="generatedCharacter" class="text-center">
+                            <!-- Character image will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Deseos Mágicos -->
+            <div id="step4" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Tus 3
+                        <span class="text-transparent bg-clip-text animated-gradient">Deseos</span>
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧞 "Cuidado con lo que deseas... porque SE CUMPLIRÁ"
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <!-- Wish 1 -->
+                    <div class="wish-card glass rounded-2xl p-6 border border-gray-600" onclick="selectWish(1)">
+                        <div class="text-4xl mb-4 text-center">🎁</div>
+                        <h3 class="text-xl font-bold text-center mb-3">Regalo Especial</h3>
+                        <p class="text-gray-400 text-center text-sm mb-4">Un regalo único que siempre has querido</p>
+                        <div class="text-center">
+                            <span class="text-2xl font-bold text-green-400">€50-200</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Wish 2 -->
+                    <div class="wish-card glass rounded-2xl p-6 border border-gray-600" onclick="selectWish(2)">
+                        <div class="text-4xl mb-4 text-center">🎪</div>
+                        <h3 class="text-xl font-bold text-center mb-3">Experiencia Épica</h3>
+                        <p class="text-gray-400 text-center text-sm mb-4">Una experiencia inolvidable</p>
+                        <div class="text-center">
+                            <span class="text-2xl font-bold text-blue-400">€200-500</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Wish 3 -->
+                    <div class="wish-card glass rounded-2xl p-6 border border-gray-600" onclick="selectWish(3)">
+                        <div class="text-4xl mb-4 text-center">✈️</div>
+                        <h3 class="text-xl font-bold text-center mb-3">Viaje Soñado</h3>
+                        <p class="text-gray-400 text-center text-sm mb-4">El viaje de tu vida</p>
+                        <div class="text-center">
+                            <span class="text-2xl font-bold text-purple-400">€500-2000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom Wish -->
+                <div class="max-w-2xl mx-auto">
+                    <div class="glass rounded-2xl p-6 border border-yellow-400/30">
+                        <h3 class="text-xl font-bold text-center mb-4 text-yellow-400">¿Tienes un deseo personalizado?</h3>
+                        <textarea id="customWish" rows="3" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="Describe tu deseo mágico..."></textarea>
+                        <div class="mt-4">
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Valor aproximado</label>
+                            <input type="number" id="customWishValue" class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-gray-400" placeholder="€0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 5: Vista Previa -->
+            <div id="step5" class="wizard-step hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        <span class="text-transparent bg-clip-text animated-gradient">¡Todo</span>
+                        Listo!
+                    </h2>
+                    <p class="text-xl text-gray-400">
+                        🧞 "Preparando la magia final..."
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <!-- Event Preview -->
+                    <div class="glass rounded-3xl p-8 border border-yellow-400/30 mb-8">
+                        <div class="text-center mb-8">
+                            <div id="previewCharacter" class="w-32 h-32 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full mb-4 flex items-center justify-center text-4xl">
+                                🦸
+                            </div>
+                            <h3 id="previewTitle" class="text-3xl font-bold text-yellow-400 mb-2">Evento de Prueba</h3>
+                            <p id="previewDate" class="text-gray-400">📅 01/01/2025</p>
+                            <p id="previewLocation" class="text-gray-400">📍 Ubicación del Evento</p>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-6 mb-8">
+                            <div class="text-center">
+                                <div class="text-3xl mb-2">🎯</div>
+                                <div class="text-2xl font-bold text-purple-400" id="previewWishes">3</div>
+                                <div class="text-sm text-gray-400">Deseos</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl mb-2">💰</div>
+                                <div class="text-2xl font-bold text-green-400" id="previewBudget">€500</div>
+                                <div class="text-sm text-gray-400">Presupuesto</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl mb-2">⏱️</div>
+                                <div class="text-2xl font-bold text-blue-400" id="previewTime">24-48h</div>
+                                <div class="text-sm text-gray-400">Entrega</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-gray-300 mb-6" id="previewDescription">
+                                Descripción del evento...
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- What You'll Get -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="glass rounded-2xl p-6 border border-purple-400/30">
+                            <h4 class="text-xl font-bold text-purple-300 mb-4">✨ Recibirás:</h4>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">🎬</span>
+                                    <span>Video-invitación 4K</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">🌐</span>
+                                    <span>Landing page épica</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">🎨</span>
+                                    <span>Personaje personalizado</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-purple-400">🛍️</span>
+                                    <span>Colecciones desbloqueables</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6 border border-blue-400/30">
+                            <h4 class="text-xl font-bold text-blue-300 mb-4">💫 Y también:</h4>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">📱</span>
+                                    <span>Sistema de RSVP</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">💳</span>
+                                    <span>Pagos y donaciones</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">📊</span>
+                                    <span>Analytics en tiempo real</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-blue-400">🎯</span>
+                                    <span>Marketing integrado</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Step -->
+            <div id="successStep" class="wizard-step hidden">
+                <div class="text-center">
+                    <div class="text-8xl mb-8 success-animation">🎉</div>
+                    <h2 class="text-5xl font-bold mb-6 text-transparent bg-clip-text animated-gradient">
+                        ¡Magia Completa!
+                    </h2>
+                    <p class="text-2xl text-gray-300 mb-8">
+                        🧞 "Tu evento ya está en mis manos. 
+                        <br/>En 24-48h tendrás la magia lista."
+                    </p>
+                    
+                    <div class="glass rounded-3xl p-8 border border-yellow-400/30 max-w-2xl mx-auto mb-8">
+                        <h3 class="text-2xl font-bold text-yellow-400 mb-4">¿Qué pasa ahora?</h3>
+                        <div class="space-y-4 text-left">
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                                <span class="text-gray-300">Djinx está creando tu personaje épico</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                                <span class="text-gray-300">Generando el video-invitación cinematográfico</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                                <span class="text-gray-300">Construyendo tu landing page mágica</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                                <span class="text-gray-300">Te enviaremos todo por email</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="createAnotherEvent()" class="btn-magic px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-xl font-bold">
+                            🎉 Crear Otro Evento
+                        </button>
+                        <button onclick="goToDashboard()" class="btn-magic px-8 py-4 glass border-2 border-yellow-400 rounded-full text-xl font-bold">
+                            📊 Ir al Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Navigation Buttons -->
+    <div class="fixed bottom-0 left-0 right-0 glass border-t border-white/10 p-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <button id="prevBtn" onclick="previousStep()" class="btn-magic px-6 py-3 glass border border-gray-600 rounded-full font-bold hover:border-gray-400 transition-all hidden">
+                ← Anterior
+            </button>
+            
+            <div class="flex-1"></div>
+            
+            <button id="nextBtn" onclick="nextStep()" class="btn-magic px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-bold">
+                Siguiente →
+            </button>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center">
+        <div class="text-center">
+            <div class="text-8xl mb-6 genie-float">🧞</div>
+            <h3 class="text-3xl font-bold text-yellow-400 mb-4">Creando Magia...</h3>
+            <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 border-4 border-yellow-400/30 border-t-yellow-400 rounded-full spinner"></div>
+            </div>
+            <p class="text-gray-400" id="loadingText">Djinx está trabajando en tu evento...</p>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+        // Wizard State
+        let currentStepIndex = 1;
+        let wizardData = {
+            eventType: '',
+            protagonistName: '',
+            eventCategory: '',
+            eventDate: '',
+            eventLocation: '',
+            eventDescription: '',
+            photo: null,
+            characterDescription: '',
+            artStyle: 'fantasy',
+            wishes: [],
+            customWish: '',
+            customWishValue: 0
+        };
+        
+        // Step Management
+        function showStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.wizard-step').forEach(step => {
+                step.classList.add('hidden');
+            });
+            
+            // Show current step
+            const currentStep = document.getElementById(`step${stepNumber}`);
+            if (currentStep) {
+                currentStep.classList.remove('hidden');
+                currentStep.classList.add('step-enter');
+            }
+            
+            // Update progress
+            const progress = (stepNumber / 5) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('currentStep').textContent = stepNumber;
+            
+            // Update navigation
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (stepNumber === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (stepNumber === 5) {
+                nextBtn.textContent = '✨ Crear Evento';
+            } else {
+                nextBtn.textContent = 'Siguiente →';
+            }
+        }
+        
+        function nextStep() {
+            if (currentStepIndex === 5) {
+                createEvent();
+                return;
+            }
+            
+            if (validateCurrentStep()) {
+                currentStepIndex++;
+                showStep(currentStepIndex);
+            }
+        }
+        
+        function previousStep() {
+            if (currentStepIndex > 1) {
+                currentStepIndex--;
+                showStep(currentStepIndex);
+            }
+        }
+        
+        function selectEventType(type) {
+            wizardData.eventType = type;
+            
+            // Visual feedback
+            document.querySelectorAll('.card-hover').forEach(card => {
+                card.classList.remove('border-yellow-400');
+                card.classList.remove('bg-yellow-400/10');
+            });
+            
+            event.target.closest('.card-hover').classList.add('border-yellow-400', 'bg-yellow-400/10');
+            
+            // Auto advance after selection
+            setTimeout(() => {
+                nextStep();
+            }, 1000);
+        }
+        
+        function validateCurrentStep() {
+            switch (currentStepIndex) {
+                case 1:
+                    if (!wizardData.eventType) {
+                        alert('🧞 "Debes seleccionar un tipo de evento primero"');
+                        return false;
+                    }
+                    break;
+                case 2:
+                    wizardData.protagonistName = document.getElementById('protagonistName').value;
+                    wizardData.eventCategory = document.getElementById('eventType').value;
+                    wizardData.eventDate = document.getElementById('eventDate').value;
+                    wizardData.eventLocation = document.getElementById('eventLocation').value;
+                    wizardData.eventDescription = document.getElementById('eventDescription').value;
+                    
+                    if (!wizardData.protagonistName || !wizardData.eventCategory || !wizardData.eventDate) {
+                        alert('🧞 "Por favor completa los campos obligatorios"');
+                        return false;
+                    }
+                    break;
+                case 3:
+                    wizardData.characterDescription = document.getElementById('characterDescription').value;
+                    wizardData.artStyle = document.getElementById('artStyle').value;
+                    
+                    if (!wizardData.characterDescription) {
+                        alert('🧞 "Describe el personaje para que pueda crear la magia"');
+                        return false;
+                    }
+                    break;
+                case 4:
+                    const customWish = document.getElementById('customWish').value;
+                    const customWishValue = document.getElementById('customWishValue').value;
+                    
+                    if (customWish && customWishValue) {
+                        wizardData.customWish = customWish;
+                        wizardData.customWishValue = parseInt(customWishValue);
+                    }
+                    
+                    if (wizardData.wishes.length === 0 && !customWish) {
+                        alert('🧞 "Selecciona al menos un deseo o crea uno personalizado"');
+                        return false;
+                    }
+                    break;
+                case 5:
+                    // Preview step - always valid
+                    updatePreview();
+                    break;
+            }
+            return true;
+        }
+        
+        // Photo Upload
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('🧞 "La foto no puede pesar más de 5MB"');
+                    return;
+                }
+                
+                wizardData.photo = file;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('photoPreview').innerHTML = `
+                        <img src="${e.target.result}" alt="Foto del protagonista" 
+                             class="w-32 h-32 mx-auto rounded-full object-cover mb-4 border-4 border-yellow-400">
+                        <p class="text-yellow-400 font-semibold">¡Foto cargada!</p>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Character Generation
+        function generateCharacter() {
+            const description = document.getElementById('characterDescription').value;
+            const artStyle = document.getElementById('artStyle').value;
+            
+            if (!description) {
+                alert('🧞 "Primero describe el personaje"');
+                return;
+            }
+            
+            showLoading('Generando personaje épico...');
+            
+            // Simulate AI generation
+            setTimeout(() => {
+                const characterImage = generateMockCharacter(description, artStyle);
+                
+                document.getElementById('generatedCharacter').innerHTML = `
+                    <img src="${characterImage}" alt="Personaje generado" 
+                         class="w-64 h-64 mx-auto rounded-2xl object-cover mb-4 border-4 border-yellow-400">
+                    <h4 class="text-xl font-bold text-yellow-400 mb-2">¡Tu Héroe está Listo!</h4>
+                    <p class="text-gray-300">Personaje generado con estilo ${artStyle}</p>
+                `;
+                
+                document.getElementById('characterResult').classList.remove('hidden');
+                hideLoading();
+            }, 3000);
+        }
+        
+        function generateMockCharacter(description, style) {
+            // Mock character generation - in real app, this would call AI API
+            const characters = {
+                fantasy: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=400&fit=crop',
+                cartoon: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop',
+                realistic: 'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=400&h=400&fit=crop',
+                anime: 'https://images.unsplash.com/photo-1617185242480-3a5a0c2a5e9e?w=400&h=400&fit=crop',
+                cyberpunk: 'https://images.unsplash.com/photo-1579546929518-9e396f3a8a09?w=400&h=400&fit=crop',
+                medieval: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=400&fit=crop'
+            };
+            
+            return characters[style] || characters.fantasy;
+        }
+        
+        // Wish Selection
+        function selectWish(wishNumber) {
+            const wishCard = event.target.closest('.wish-card');
+            
+            if (wishCard.classList.contains('selected')) {
+                wishCard.classList.remove('selected');
+                wizardData.wishes = wizardData.wishes.filter(w => w !== wishNumber);
+            } else {
+                if (wizardData.wishes.length >= 3) {
+                    alert('🧞 "Solo puedes seleccionar 3 deseos máximos"');
+                    return;
+                }
+                wishCard.classList.add('selected');
+                wizardData.wishes.push(wishNumber);
+            }
+        }
+        
+        // Preview Update
+        function updatePreview() {
+            document.getElementById('previewTitle').textContent = `Evento de ${wizardData.protagonistName}`;
+            document.getElementById('previewDate').textContent = `📅 ${new Date(wizardData.eventDate).toLocaleDateString('es-ES')}`;
+            document.getElementById('previewLocation').textContent = `📍 ${wizardData.eventLocation}`;
+            document.getElementById('previewDescription').textContent = wizardData.eventDescription;
+            document.getElementById('previewWishes').textContent = wizardData.wishes.length + (wizardData.customWish ? 1 : 0);
+            
+            // Calculate budget
+            let budget = 0;
+            wizardData.wishes.forEach(wish => {
+                const wishBudgets = { 1: 125, 2: 350, 3: 1250 };
+                budget += wishBudgets[wish] || 0;
+            });
+            budget += wizardData.customWishValue || 0;
+            document.getElementById('previewBudget').textContent = `€${budget}`;
+        }
+        
+        // Event Creation
+        function createEvent() {
+            showLoading('Creando tu evento mágico...');
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Save to localStorage for demo
+                localStorage.setItem('eventData', JSON.stringify(wizardData));
+                
+                hideLoading();
+                showSuccess();
+            }, 4000);
+        }
+        
+        // Loading and Success
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+        
+        function showSuccess() {
+            document.querySelectorAll('.wizard-step').forEach(step => {
+                step.classList.add('hidden');
+            });
+            document.getElementById('successStep').classList.remove('hidden');
+        }
+        
+        // Navigation Functions
+        function exitWizard() {
+            if (confirm('🧞 "¿Seguro que quieres salir? Perderás el progreso"')) {
+                window.location.href = '/';
+            }
+        }
+        
+        function createAnotherEvent() {
+            // Reset wizard
+            currentStepIndex = 1;
+            wizardData = {
+                eventType: '',
+                protagonistName: '',
+                eventCategory: '',
+                eventDate: '',
+                eventLocation: '',
+                eventDescription: '',
+                photo: null,
+                characterDescription: '',
+                artStyle: 'fantasy',
+                wishes: [],
+                customWish: '',
+                customWishValue: 0
+            };
+            
+            showStep(1);
+        }
+        
+        function goToDashboard() {
+            alert('🧞 "Dashboard próximamente. Por ahora revisa tu email en 24-48h"');
+            window.location.href = '/';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(1);
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('eventDate').setAttribute('min', today);
+        });
+    </script>
+</body>
+</html>
